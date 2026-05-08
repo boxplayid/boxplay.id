@@ -1,263 +1,312 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beranda - Playbox Billing</title>
-    <!-- Font & Icons -->
+    <title>Beranda - Boxplay X NUD</title>
+    <link rel="icon" type="image/jpeg" href="foto_boxplay/icon_aplikasi.jpeg">
+    <meta name="theme-color" content="#090b10">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
-    <!-- CSS Eksternal -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-
-    <!-- NAVIGATION -->
-    <header>
-        <div class="container nav-content" style="display: flex; justify-content: space-between; align-items: center;">
-            <div class="brand" onclick="navigate('home')" style="display: flex; align-items: center; gap: 0.8rem; cursor: pointer;">
-                <div style="background: var(--primary); width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: var(--neon-glow);">
-                    <i class="fas fa-bolt" style="color: #000; font-size: 1.2rem;"></i>
-                </div>
-                <span class="brand-name">BOXPLAY x NUD</span>
-            </div>
-            
-            <div class="nav-right" id="nav-actions" style="display: flex; align-items: center; gap: 1.5rem;">
-                <div class="cart-btn" onclick="toggleCart()" style="position: relative; background: rgba(255,255,255,0.05); width: 45px; height: 45px; border-radius: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid var(--border); transition: 0.3s;">
-                    <i class="fas fa-shopping-bag" style="color: var(--primary);"></i>
-                    <span id="cart-badge" style="position: absolute; top: -5px; right: -5px; background: var(--accent); color: white; font-size: 0.7rem; font-weight: 900; width: 20px; height: 20px; border-radius: 8px; display: none; align-items: center; justify-content: center; border: 2px solid var(--bg-dark);">0</span>
-                </div>
-                <button class="btn btn-primary" id="login-nav-btn" onclick="window.location.href='login.html'" style="padding: 0.6rem 1.2rem; font-size: 0.8rem;">
-                    ADMIN <i class="fas fa-arrow-right" style="font-size: 0.7rem;"></i>
+<body data-page="home">
+    <div class="header">
+        <div class="container navbar">
+            <a class="brand" href="beranda.html">
+                <span class="brand-icon"><img src="foto_boxplay/icon_aplikasi.jpeg" alt="Logo Boxplay" /></span>
+                <span class="brand-name">BOXPLAY X NUD</span>
+            </a>
+            <nav class="navbar-center">
+                <a class="nav-link active" href="beranda.html">
+                    <i class="fas fa-home"></i> <span>Home</span>
+                </a>
+                <a class="nav-link" href="waiting.html">
+                    <i class="fas fa-list"></i> <span>Antrian</span>
+                </a>
+                <a class="nav-link" href="cabang.html">
+                    <i class="fas fa-store"></i> <span>Cabang</span>
+                </a>
+                <a class="nav-link" href="portofolio.html">
+                    <i class="fas fa-images"></i> <span>Portofolio</span>
+                </a>
+                <a class="nav-link" href="tentang.html">
+                    <i class="fas fa-info-circle"></i> <span>Tentang Kami</span>
+                </a>
+            </nav>
+            <div class="navbar-end">
+                <button class="btn btn-secondary btn-icon admin-login" onclick="navigateTo('login.html')" title="Login Admin">
+                    <i class="fas fa-user-shield"></i>
                 </button>
             </div>
+            <button class="menu-toggle" id="menu-toggle" onclick="toggleMenu()" aria-label="Toggle menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
         </div>
-    </header>
+        <nav class="mobile-menu" id="mobile-menu">
+            <div class="mobile-menu-content">
+                <a href="beranda.html" class="mobile-menu-item">
+                    <i class="fas fa-home"></i>
+                    <span>Beranda</span>
+                </a>
+                <a href="waiting.html" class="mobile-menu-item">
+                    <i class="fas fa-list"></i>
+                    <span>Daftar Antrian</span>
+                </a>
+                <a href="cabang.html" class="mobile-menu-item">
+                    <i class="fas fa-store"></i>
+                    <span>Cabang</span>
+                </a>
+                <a href="portofolio.html" class="mobile-menu-item">
+                    <i class="fas fa-images"></i>
+                    <span>Portofolio</span>
+                </a>
+                <a href="checkout.html" class="mobile-menu-item">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Bayar Pesanan</span>
+                </a>
+                <a href="tentang.html" class="mobile-menu-item">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Tentang Kami</span>
+                </a>
+                <a href="login.html" class="mobile-menu-item">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Admin</span>
+                </a>
+            </div>
+        </nav>
+    </div>
 
-    <!-- SECTION: HOME (Landing Page) -->
-    <div id="home-section">
-        <main class="container">
-            <!-- Hero Photo Slider (New) -->
-            <section class="hero-photo-section">
-                <div class="hero-photo-wrapper">
-                    <div class="hero-photo-container" id="hero-photo-slider">
-                        <div class="hero-photo-slide">
-                            <img src="foto_boxplay/foto1.jpg" alt="Playbox Atmosphere 1">
-                            <div class="hero-photo-overlay">
-                                <p>Premium Experience</p>
-                                <h2>Tempat Nongkrong Gamers Terbaik</h2>
-                            </div>
-                        </div>
-                        <div class="hero-photo-slide">
-                            <img src="foto_boxplay/foto2.jpg" alt="Playbox Atmosphere 2">
-                            <div class="hero-photo-overlay">
-                                <p>Quality Units</p>
-                                <h2>Unit PlayStation 4 Terawat</h2>
-                            </div>
-                        </div>
-                        <div class="hero-photo-slide">
-                            <img src="foto_boxplay/foto3.jpg" alt="Playbox Atmosphere 3">
-                            <div class="hero-photo-overlay">
-                                <p>Comfort Zone</p>
-                                <h2>Area Bermain Nyaman & Sejuk</h2>
-                            </div>
-                        </div>
-                        <div class="hero-photo-slide">
-                            <img src="foto_boxplay/foto4.jpg" alt="Playbox Atmosphere 4">
-                            <div class="hero-photo-overlay">
-                                <p>Snack & Drinks</p>
-                                <h2>Temani Mainmu dengan Menu Spesial</h2>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Slider Dots for Hero -->
-                    <div class="slider-dots" id="hero-dots">
-                        <span class="dot active"></span>
-                        <span class="dot"></span>
-                        <span class="dot"></span>
-                        <span class="dot"></span>
-                    </div>
+    <main class="container">
+        <section class="hero">
+            <div class="hero-grid">
+                <div class="hero-copy">
+                    <p class="tag">Tempat Nongkrong Gamers Terbaik</p>
+                    <h1>Momen Lebih Asik Bersama Boxplay & NUD Cafe</h1>
                 </div>
-            </section>
-
-            <!-- Promo Section (Slider Otomatis) -->
-            <section class="promo-section">
-                <div class="promo-slider-wrapper">
-                    <div class="promo-container" id="promo-slider">
-                        <div class="promo-card promo-1">
-                            <span class="promo-tag">LIMITED PROMO</span>
-                            <h3>Main 3 Jam, Bayar 2 Jam!</h3>
-                            <p>Berlaku untuk semua unit PS4 setiap hari Jumat di semua cabang.</p>
-                            <i class="fab fa-playstation"></i>
+                <div class="hero-visual">
+                    <div class="hero-slider" id="hero-slider">
+                        <div class="hero-slide active" data-image="foto_boxplay/unit1.jpeg" aria-label="Community Play Session 1">
+                            <div class="slide-overlay">
+                                <h2>Komunitas Gaming Boxplay</h2>
+                                <p>Suasana hangat dan seru bersama teman-teman gamer.</p>
+                            </div>
                         </div>
-                        <div class="promo-card promo-2">
-                            <span class="promo-tag">NEW MEMBER</span>
-                            <h3>Gratis Minuman Dingin</h3>
-                            <p>Dapatkan Coca-Cola gratis untuk pendaftaran member pertama kali.</p>
-                            <i class="fas fa-wine-glass-alt"></i>
+                        <div class="hero-slide" data-image="foto_boxplay/unit2.jpeg" aria-label="Community Play Session 2">
+                            <div class="slide-overlay">
+                                <h2>Moment Seru di NUD Cafe</h2>
+                                <p>Bermain bersama dalam suasana nyaman dan enerjik.</p>
+                            </div>
                         </div>
-                        <div class="promo-card promo-3">
-                            <span class="promo-tag">WEEKEND BLAST</span>
-                            <h3>Cashback 10%</h3>
-                            <p>Main minimal 5 jam di hari Sabtu/Minggu dapat cashback koin.</p>
-                            <i class="fas fa-coins"></i>
+                        <div class="hero-slide" data-image="foto_boxplay/unit3.jpeg" aria-label="Community Play Session 3">
+                            <div class="slide-overlay">
+                                <h2>Waktu Berkualitas Gamer</h2>
+                                <p>Atmosfer santai yang cocok untuk ngumpul dan main game.</p>
+                            </div>
                         </div>
-                        <div class="promo-card promo-1">
-                            <span class="promo-tag">SPECIAL EVENT</span>
-                            <h3>Turnamen Mingguan</h3>
-                            <p>Ikuti turnamen FIFA setiap Sabtu malam. Hadiah total Jutaan Rupiah!</p>
-                            <i class="fas fa-trophy"></i>
+                        <div class="hero-slide" data-image="foto_boxplay/unit4.jpeg" aria-label="Community Play Session 4">
+                            <div class="slide-overlay">
+                                <h2>Gaming Pelanggan Boxplay</h2>
+                                <p>Pengalaman gaming yang seru di setiap sesi.</p>
+                            </div>
+                        </div>
+                        <div class="hero-slide" data-image="foto_boxplay/unit5.jpeg" aria-label="Community Play Session 5">
+                            <div class="slide-overlay">
+                                <h2>Momen Gaming Yang Keren</h2>
+                                <p>Gaya hangout gamers dengan sentuhan Boxplay.</p>
+                            </div>
                         </div>
                     </div>
-                    <!-- Slider Dots -->
                     <div class="slider-dots" id="slider-dots">
-                        <span class="dot active"></span>
-                        <span class="dot"></span>
-                        <span class="dot"></span>
-                        <span class="dot"></span>
+                        <button class="slider-dot active" aria-label="Slide 1"></button>
+                        <button class="slider-dot" aria-label="Slide 2"></button>
+                        <button class="slider-dot" aria-label="Slide 3"></button>
+                        <button class="slider-dot" aria-label="Slide 4"></button>
+                        <button class="slider-dot" aria-label="Slide 5"></button>
                     </div>
-                </div>
-            </section>
-
-            <section id="features" style="margin-top: 4rem;">
-                <div class="feature-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
-                    <div class="feature-card" style="padding: 2rem; text-align: center; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 2rem;">
-                        <div class="feature-icon" style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;"><i class="fas fa-bolt"></i></div>
-                        <h4 style="font-weight: 800; margin-bottom: 0.5rem;">INSTANT PLAY</h4>
-                        <p style="font-size: 0.85rem; color: var(--text-muted);">Tanpa ribet, langsung scan dan main.</p>
-                    </div>
-                    <div class="feature-card" style="padding: 2rem; text-align: center; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 2rem;">
-                        <div class="feature-icon" style="font-size: 2rem; color: var(--secondary); margin-bottom: 1rem;"><i class="fas fa-coffee"></i></div>
-                        <h4 style="font-weight: 800; margin-bottom: 0.5rem;">NUD CAFE</h4>
-                        <p style="font-size: 0.85rem; color: var(--text-muted);">Main sambil ngopi santai di NUD Cafe.</p>
-                    </div>
-                    <div class="feature-card" style="padding: 2rem; text-align: center; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 2rem;">
-                        <div class="feature-icon" style="font-size: 2rem; color: var(--accent); margin-bottom: 1rem;"><i class="fas fa-gamepad"></i></div>
-                        <h4 style="font-weight: 800; margin-bottom: 0.5rem;">PRO GEAR</h4>
-                        <p style="font-size: 0.85rem; color: var(--text-muted);">Unit PS4 dengan stik original.</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Product Style Units (New E-commerce Section) -->
-            <section class="product-section">
-                <h3 class="section-title">Katalog Unit Tersedia</h3>
-                <div class="product-grid" id="home-product-grid">
-                    <!-- Unit products will be generated by JS -->
-                </div>
-            </section>
-
-            <!-- Menu Tambahan (Snacks & Drinks) -->
-            <section class="product-section">
-                <h3 class="section-title">Menu Tambahan (Snacks & Drinks)</h3>
-                <div class="product-grid" id="home-menu-grid">
-                    <!-- Products will be generated by JS -->
-                </div>
-            </section>
-        </main>
-
-        <footer>
-            <div class="container">
-                <div class="footer-grid">
-                    <div class="footer-info">
-                        <div class="brand" style="display: flex; align-items: center; gap: 0.8rem;">
-                            <div style="background: var(--primary); width: 35px; height: 35px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                                <i class="fas fa-bolt" style="color: #000; font-size: 1rem;"></i>
-                            </div>
-                            <span class="brand-name" style="font-size: 1.2rem;">BOXPLAY x NUD</span>
-                        </div>
-                        <p>Solusi manajemen rental PlayStation modern nomor satu di Indonesia. Profesional, akurat, dan sangat mudah digunakan.</p>
-                    </div>
-                    <div class="footer-links">
-                        <h4>Navigasi</h4>
-                        <ul>
-                            <li><a href="#" onclick="navigate('home')">Beranda</a></li>
-                            <li><a href="#features">Fitur</a></li>
-                            <li><a href="#home-product-grid">Unit PS</a></li>
-                            <li><a href="#" onclick="navigate('login')">Admin Login</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-links">
-                        <h4>Bantuan</h4>
-                        <ul>
-                            <li><a href="#">Pusat Bantuan</a></li>
-                            <li><a href="#">Cara Penggunaan</a></li>
-                            <li><a href="#">Kebijakan Privasi</a></li>
-                            <li><a href="#">Kontak Kami</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="footer-bottom">
-                    &copy; 2026 Playbox Billing System. Built with <i class="fas fa-heart" style="color: var(--danger);"></i> for Gamers.
                 </div>
             </div>
-        </footer>
-    </div>
+        </section>
 
-    <!-- CART MODAL -->
-    <div id="cart-modal" class="modal-overlay hidden">
-        <div class="cart-modal-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                <h2 style="font-weight: 800; font-size: 1.5rem;"><i class="fas fa-shopping-basket" style="color: var(--primary);"></i> Pesanan Anda</h2>
-                <button onclick="toggleCart()" style="background:none; border:none; color: var(--text-muted); cursor:pointer; font-size: 1.5rem;"><i class="fas fa-times"></i></button>
-            </div>
-            
-            <div id="cart-items-container" style="max-height: 400px; overflow-y: auto;">
-                <!-- Items will be injected here -->
-            </div>
-
-            <div class="cart-footer">
-                <div class="flex justify-between" style="margin-bottom: 1.5rem;">
-                    <span style="font-weight: 600;">Total Bayar:</span>
-                    <span id="cart-total-price" style="font-weight: 800; color: var(--primary); font-size: 1.25rem;">Rp 0</span>
+        <section class="promo-slider-section">
+            <div class="promo-slider" id="promo-slider">
+                <div class="promo-slide active" style="background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);">
+                    <div class="promo-content">
+                        <h2>Main 3 Jam, Bayar 2 Jam!</h2>
+                        <p>Nikmati promo khusus di NUD Cafe setiap hari Jumat.</p>
+                        <button class="btn btn-primary">Pesan Sekarang</button>
+                    </div>
                 </div>
-                <button class="btn btn-primary w-full" style="padding: 1.2rem;" onclick="goToCheckout()">
-                    CHECKOUT SEKARANG <i class="fas fa-arrow-right"></i>
-                </button>
+                <div class="promo-slide" style="background: linear-gradient(135deg, var(--accent-strong) 0%, var(--accent) 100%);">
+                    <div class="promo-content">
+                        <h2>Beli 1 Gratis 1 Kopi Spesial</h2>
+                        <p>Promo pagi untuk pembelian kopi NUD Signature sebelum jam 12 siang.</p>
+                        <button class="btn btn-primary">Lihat Menu</button>
+                    </div>
+                </div>
+                <div class="promo-slide" style="background: linear-gradient(135deg, var(--accent-soft) 0%, var(--accent) 100%);">
+                    <div class="promo-content">
+                        <h2>Diskon 20% untuk Member</h2>
+                        <p>Daftar membership dan dapatkan diskon setiap hari.</p>
+                        <button class="btn btn-primary">Daftar Member</button>
+                    </div>
+                </div>
+            </div>
+            <div class="promo-slider-dots" id="promo-slider-dots">
+                <button class="promo-slider-dot active" aria-label="Promo 1"></button>
+                <button class="promo-slider-dot" aria-label="Promo 2"></button>
+                <button class="promo-slider-dot" aria-label="Promo 3"></button>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-title">Katalog Unit Tersedia</div>
+            <p class="section-subtitle">Unit PlayStation 4 terawat dengan kualitas premium untuk pengalaman bermain terbaik.</p>
+            <div id="home-product-grid" class="grid product-grid"></div>
+        </section>
+    </main>
+
+    <footer class="container">
+        <div class="footer-row">
+            <div class="footer-card">
+                <h4>Boxplayid</h4>
+                <p>Solusi manajemen rental PlayStation modern nomor satu di Indonesia. Profesional, akurat, dan sangat mudah digunakan.</p>
+            </div>
+            <div class="footer-card">
+                <h4>Navigasi</h4>
+                <ul>
+                    <li><a href="beranda.html">Beranda</a></li>
+                    <li><a href="booking.html">Buat Antrian</a></li>
+                    <li><a href="login.html">Admin</a></li>
+                    <li><a href="pages/display.html">TV Display</a></li>
+                </ul>
+            </div>
+            <div class="footer-card">
+                <h4>Bantuan</h4>
+                <ul>
+                    <li><a href="#">Pusat Bantuan</a></li>
+                    <li><a href="#">Cara Penggunaan</a></li>
+                    <li><a href="#">Kebijakan Privasi</a></li>
+                    <li><a href="#">Kontak Kami</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Playbox Billing System.</p>
+        </div>
+    </footer>
+
+    <!-- Customer Info Modal -->
+    <div id="customer-modal" class="customer-modal hidden">
+        <div class="customer-modal-panel">
+            <div class="customer-modal-header">
+                <h3>Selamat Datang di Boxplayid</h3>
+                <p>Masukkan data Anda untuk melanjutkan</p>
+            </div>
+            <div class="customer-modal-body">
+                <div class="form-group">
+                    <label for="customer-name">Nama Lengkap</label>
+                    <input id="customer-name" class="form-input" type="text" placeholder="Masukkan nama lengkap" />
+                </div>
+                <div class="form-group">
+                    <label for="customer-phone">Nomor WhatsApp</label>
+                    <input id="customer-phone" class="form-input" type="tel" placeholder="08xx xxxx xxxx" />
+                </div>
+                <div class="form-group">
+                    <label for="customer-type">Jenis Kunjungan</label>
+                    <select id="customer-type" class="form-select">
+                        <option value="menu">Pemesanan Menu</option>
+                        <option value="booking">Booking Unit Gaming</option>
+                    </select>
+                </div>
+            </div>
+            <div class="customer-modal-footer">
+                <button class="btn btn-primary w-full" onclick="saveCustomerInfo()">Lanjutkan</button>
             </div>
         </div>
     </div>
 
-    <!-- Firebase SDK -->
+    <div id="app-toast" class="toast"></div>
+
+    <div id="cart-modal" class="cart-modal hidden">
+        <div class="cart-modal-panel">
+            <div class="cart-modal-header">
+                <div>
+                    <h3>Keranjang Pesanan</h3>
+                    <p style="color: var(--muted); font-size: 0.95rem; margin-top: 0.35rem;">Kelola item sebelum checkout.</p>
+                </div>
+                <button class="btn btn-secondary btn-icon" onclick="toggleCart()"><i class="fas fa-times"></i></button>
+            </div>
+            <div id="cart-items-container" class="cart-items-container"></div>
+            <div class="cart-modal-footer">
+                <div class="checkout-row">
+                    <span>Total</span>
+                    <strong id="cart-total-price">Rp 0</strong>
+                </div>
+                <button class="btn btn-primary w-full" onclick="goToCheckout()" type="button">Checkout Sekarang</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Us Modal -->
+    <div id="about-modal" class="about-modal hidden">
+        <div class="about-modal-panel">
+            <div class="about-modal-header">
+                <button class="btn btn-secondary btn-icon" onclick="closeAboutModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="about-modal-body">
+                <div class="about-content">
+                    <div class="about-logo">
+                        <img src="foto_boxplay/icon_aplikasi.jpeg" alt="Logo Boxplay X NUD">
+                    </div>
+                    <h2>Boxplay X NUD</h2>
+                    <p class="about-description">
+                        Solusi manajemen rental PlayStation modern nomor satu di Indonesia. Menyediakan unit gaming berkualitas premium dengan sistem antrian canggih dan menu spesial dari NUD Cafe.
+                    </p>
+                    
+                    <div class="about-modal-section">
+                        <h4><i class="fas fa-map-marker-alt"></i> Alamat</h4>
+                        <p>Jl. Purus IV No. 5, Padang, Sumatera Barat<br>Indonesia</p>
+                    </div>
+
+                    <div class="about-modal-section">
+                        <h4><i class="fas fa-envelope"></i> Email</h4>
+                        <a href="mailto:boxplayid@gmail.com">boxplayid@gmail.com</a>
+                    </div>
+
+                    <div class="about-modal-section">
+                        <h4><i class="fas fa-phone"></i> Nomor HP</h4>
+                        <a href="tel:+628557862734">+62 855-786-2734</a>
+                    </div>
+
+                    <div class="about-modal-section">
+                        <h4><i class="fas fa-share-alt"></i> Ikuti Media Sosial Kami</h4>
+                        <div class="social-links">
+                            <a href="https://www.instagram.com/boxplay_nud" class="social-link" target="_blank" title="Instagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="https://www.facebook.com/boxplay_nud" class="social-link" target="_blank" title="Facebook">
+                                <i class="fab fa-facebook"></i>
+                            </a>
+                            <a href="https://www.tiktok.com/@boxplay_nud" class="social-link" target="_blank" title="TikTok">
+                                <i class="fab fa-tiktok"></i>
+                            </a>
+                            <a href="https://wa.me/628557862734" class="social-link" target="_blank" title="WhatsApp">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-    
-    <!-- Konfigurasi Firebase -->
-    <script>
-        let USE_FIREBASE = true;
-        let db = null;
-        
-        try {
-            const firebaseConfig = {
-                apiKey: "AIzaSyDvMKKIFUD2Ys3MtdxDRiNFdx_OKckChpE",
-                authDomain: "idboxplay-7a27f.firebaseapp.com",
-                databaseURL: "https://idboxplay-7a27f-default-rtdb.asia-southeast1.firebasedatabase.app",
-                projectId: "idboxplay-7a27f",
-                storageBucket: "idboxplay-7a27f.firebasestorage.app",
-                messagingSenderId: "553757223806",
-                appId: "1:553757223806:web:629c586dc82fd8e5dca12f",
-                measurementId: "G-J6CMR1W449"
-            };
-            
-            firebase.initializeApp(firebaseConfig);
-            db = firebase.database();
-            console.log("Firebase initialized successfully");
-        } catch (error) {
-            console.error("Error initializing Firebase, falling back to localStorage:", error);
-            USE_FIREBASE = false;
-        }
-    </script>
-    
-    <!-- JS Eksternal -->
+    <script src="js/app.js"></script>
     <script src="js/script.js"></script>
-    <script>
-        // Memastikan inisialisasi berjalan saat DOM siap
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log("DOM fully loaded and parsed");
-            if (typeof initPage === 'function') {
-                initPage();
-            }
-        });
-    </script>
 </body>
 </html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cabang Kami - Boxplayid</title>
+    <link rel="icon" type="image/jpeg" href="foto_boxplay/icon_aplikasi.jpeg">
+    <meta name="theme-color" content="#090b10">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="cabang">
+    <div class="header">
+        <div class="container navbar">
+            <a class="brand" href="beranda.html">
+                <span class="brand-icon"><img src="foto_boxplay/icon_aplikasi.jpeg" alt="Logo Boxplay" /></span>
+                <span class="brand-name">BOXPLAYID</span>
+            </a>
+            <nav class="navbar-center">
+                <a class="nav-link" href="beranda.html">
+                    <i class="fas fa-home"></i> <span>Home</span>
+                </a>
+                <a class="nav-link" href="waiting.html">
+                    <i class="fas fa-list"></i> <span>Antrian</span>
+                </a>
+                <a class="nav-link active" href="cabang.html">
+                    <i class="fas fa-store"></i> <span>Cabang</span>
+                </a>
+                <a class="nav-link" href="portofolio.html">
+                    <i class="fas fa-images"></i> <span>Portofolio</span>
+                </a>
+                <a class="nav-link" href="tentang.html">
+                    <i class="fas fa-info-circle"></i> <span>Tentang Kami</span>
+                </a>
+            </nav>
+            <div class="navbar-end">
+                <button class="btn btn-secondary btn-icon admin-login" onclick="navigateTo('login.html')" title="Login Admin">
+                    <i class="fas fa-user-shield"></i>
+                </button>
+            </div>
+            <button class="menu-toggle" id="menu-toggle" onclick="toggleMenu()" aria-label="Toggle menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+        <nav class="mobile-menu" id="mobile-menu">
+            <div class="mobile-menu-content">
+                <a href="beranda.html" class="mobile-menu-item">
+                    <i class="fas fa-home"></i>
+                    <span>Beranda</span>
+                </a>
+                <a href="waiting.html" class="mobile-menu-item">
+                    <i class="fas fa-list"></i>
+                    <span>Daftar Antrian</span>
+                </a>
+                <a href="cabang.html" class="mobile-menu-item">
+                    <i class="fas fa-store"></i>
+                    <span>Cabang</span>
+                </a>
+                <a href="portofolio.html" class="mobile-menu-item">
+                    <i class="fas fa-images"></i>
+                    <span>Portofolio</span>
+                </a>
+                <a href="checkout.html" class="mobile-menu-item">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Bayar Pesanan</span>
+                </a>
+                <a href="tentang.html" class="mobile-menu-item">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Tentang Kami</span>
+                </a>
+                <a href="login.html" class="mobile-menu-item">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Admin</span>
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <main class="container">
+        <!-- Branch Hero Section -->
+        <section class="about-hero">
+            <div class="about-hero-content">
+                <h1>Cabang Kami</h1>
+                <p>Boxplay X NUD hadir di lokasi strategis untuk gamer, komunitas, dan pelanggan cafe di Padang.</p>
+            </div>
+        </section>
+
+        <!-- Branch Section -->
+        <section class="about-section">
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <h4>NUD Cafe</h4>
+                    <p>Jl. Purus IV No. 5, Padang, Sumatera Barat. Lokasi utama dengan fasilitas gaming lengkap.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <h4>PALIO SPITI</h4>
+                    <p>Cabang strategis di area pusat kota dengan konsep modern dan suasana nyaman.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <h4>PIRZY</h4>
+                    <p>Lokasi premium dengan fasilitas gaming terdepan dan menu spesial.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <h4>WAROENG RADEN</h4>
+                    <p>Cabang tradisional dengan sentuhan modern, cocok untuk nongkrong bersama teman.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- NUD Cafe Units -->
+        <section class="section">
+            <div class="section-title">Unit NUD Cafe</div>
+            <p class="section-subtitle">5 Unit PlayStation 4 tersedia di lokasi utama kami.</p>
+            <div class="grid product-grid" id="nud-units-grid">
+                <!-- Units will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- PALIO SPITI Units -->
+        <section class="section">
+            <div class="section-title">Unit PALIO SPITI</div>
+            <p class="section-subtitle">3 Unit PlayStation 4 tersedia di cabang pusat kota.</p>
+            <div class="grid product-grid" id="palio-units-grid">
+                <!-- Units will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- PIRZY Units -->
+        <section class="section">
+            <div class="section-title">Unit PIRZY</div>
+            <p class="section-subtitle">3 Unit PlayStation 4 tersedia di lokasi premium.</p>
+            <div class="grid product-grid" id="pirzy-units-grid">
+                <!-- Units will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- WAROENG RADEN Units -->
+        <section class="section">
+            <div class="section-title">Unit WAROENG RADEN</div>
+            <p class="section-subtitle">3 Unit PlayStation 4 tersedia di cabang tradisional.</p>
+            <div class="grid product-grid" id="waroeng-units-grid">
+                <!-- Units will be populated by JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <footer class="container">
+        <div class="footer-row">
+            <div class="footer-card">
+                <h4>Boxplay X NUD</h4>
+                <p>Solusi manajemen rental PlayStation modern nomor satu di Indonesia. Profesional, akurat, dan sangat mudah digunakan.</p>
+            </div>
+            <div class="footer-card">
+                <h4>Navigasi</h4>
+                <ul>
+                    <li><a href="beranda.html">Beranda</a></li>
+                    <li><a href="waiting.html">Daftar Antrian</a></li>
+                    <li><a href="cabang.html">Cabang</a></li>
+                    <li><a href="tentang.html">Tentang Kami</a></li>
+                    <li><a href="login.html">Admin</a></li>
+                </ul>
+            </div>
+            <div class="footer-card">
+                <h4>Bantuan</h4>
+                <ul>
+                    <li><a href="#">Pusat Bantuan</a></li>
+                    <li><a href="#">Cara Penggunaan</a></li>
+                    <li><a href="#">Kebijakan Privasi</a></li>
+                    <li><a href="#">Kontak Kami</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Playbox Billing System.</p>
+        </div>
+    </footer>
+
+    <div id="app-toast" class="toast"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>

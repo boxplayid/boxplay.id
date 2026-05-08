@@ -1,93 +1,77 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nomor Antrian - Playbox Billing</title>
-    <!-- Font & Icons -->
+    <title>Nomor Antrian - Boxplay X NUD</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
-    <!-- CSS Eksternal -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-
-    <!-- NAVIGATION -->
-    <header>
-        <div class="container nav-content" style="display: flex; justify-content: space-between; align-items: center;">
-            <div class="brand" onclick="navigate('home')" style="display: flex; align-items: center; gap: 0.8rem; cursor: pointer;">
-                <div style="background: var(--primary); width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: var(--neon-glow);">
-                    <i class="fas fa-bolt" style="color: #000; font-size: 1.2rem;"></i>
-                </div>
-                <span class="brand-name">BOXPLAY x NUD</span>
+<body data-page="waiting">
+    <div class="header">
+        <div class="container navbar">
+            <a class="brand" href="beranda.html">
+                <span class="brand-icon"><i class="fas fa-bolt"></i></span>
+                <span class="brand-name">BOXPLAYID</span>
+            </a>
+            <div class="nav-actions">
+                <button class="btn btn-secondary" onclick="navigateTo('beranda.html')">Beranda</button>
+                <button class="btn btn-secondary" onclick="navigateTo('booking.html')">Buat Antrian Baru</button>
             </div>
+            <button class="menu-toggle" id="menu-toggle" onclick="toggleMenu()" aria-label="Toggle menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
         </div>
-    </header>
-
-    <div id="waiting-section">
-        <div class="container" style="padding-top: 140px; padding-bottom: 60px; text-align: center;">
-            <div class="login-card" style="max-width: 500px; margin: 0 auto; border-color: var(--primary); padding: 3.5rem;">
-                <div class="success-icon" style="width: 90px; height: 90px; background: rgba(0, 255, 157, 0.1); color: var(--primary); border-radius: 25px; display: flex; align-items: center; justify-content: center; font-size: 2.8rem; margin: 0 auto 2rem; box-shadow: var(--neon-glow);">
-                    <i class="fas fa-check"></i>
-                </div>
-                <h2 style="font-size: 2.2rem; font-weight: 900; margin-bottom: 0.5rem; letter-spacing: -1px;">Booking Berhasil!</h2>
-                <p style="color: var(--text-muted); margin-bottom: 3rem; font-weight: 600;">Tunjukkan antrian ini ke kasir <span id="display-branch" style="color: var(--primary); font-weight: 800;">-</span></p>
-                
-                <div style="background: rgba(0,0,0,0.3); border: 2px dashed var(--border); border-radius: 2.5rem; padding: 3rem; margin-bottom: 3rem; position: relative; overflow: hidden;">
-                    <p style="text-transform: uppercase; font-size: 0.8rem; font-weight: 800; letter-spacing: 3px; color: var(--text-muted); margin-bottom: 1rem;">Antrian Anda</p>
-                    <div id="waiting-number" style="font-family: 'JetBrains Mono', monospace; font-size: 6rem; font-weight: 900; color: var(--primary); line-height: 1; text-shadow: var(--neon-glow);">00</div>
-                    <i class="fab fa-playstation" style="position: absolute; bottom: -20px; right: -20px; font-size: 8rem; opacity: 0.05; transform: rotate(-15deg);"></i>
-                </div>
-
-                <div style="text-align: left; background: rgba(255,255,255,0.03); padding: 2rem; border-radius: 1.5rem; margin-bottom: 2.5rem; border: 1px solid var(--border);">
-                    <div class="flex justify-between" style="margin-bottom: 0.8rem;">
-                        <span style="color: var(--text-muted); font-weight: 600;">Pelanggan:</span>
-                        <span id="display-name" style="font-weight: 800; color: #fff;">-</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span style="color: var(--text-muted); font-weight: 600;">WhatsApp:</span>
-                        <span id="display-phone" style="font-weight: 800; color: #fff;">-</span>
-                    </div>
-                </div>
-
-                <button class="btn btn-primary w-full" style="padding: 1.2rem;" onclick="navigate('home')">
-                    BALIK KE HOME <i class="fas fa-home" style="margin-left: 0.5rem;"></i>
-                </button>
+        <nav class="mobile-menu" id="mobile-menu">
+            <div class="mobile-menu-content">
+                <a href="beranda.html" class="mobile-menu-item">
+                    <i class="fas fa-home"></i>
+                    <span>Beranda</span>
+                </a>
+                <a href="booking.html" class="mobile-menu-item">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Buat Antrian</span>
+                </a>
+                <a href="login.html" class="mobile-menu-item">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Admin</span>
+                </a>
+                <a href="pages/display.html" class="mobile-menu-item">
+                    <i class="fas fa-tv"></i>
+                    <span>Tampilan TV</span>
+                </a>
             </div>
-        </div>
+        </nav>
     </div>
 
-    <!-- Firebase SDK -->
+    <main class="container">
+        <section class="section" id="waiting-content">
+            <div class="form-card card" style="text-align:center; padding:3rem 2rem;">
+                <div style="margin-bottom:1.5rem;">
+                    <span class="brand-icon"><i class="fas fa-ticket-alt"></i></span>
+                </div>
+                <h2>Booking Antrian Berhasil</h2>
+                <p class="section-subtitle">Tunjukkan nomor antrian kepada petugas ketika dipanggil.</p>
+                <div class="page-card" style="margin-top:2rem;">
+                    <div style="font-size:0.9rem; color:var(--muted); margin-bottom:0.75rem; letter-spacing:0.15em; text-transform:uppercase;">Nomor Antrian</div>
+                    <div id="waiting-number" style="font-size: 5rem; font-weight:900; color:var(--gold); margin-bottom:1rem;">00</div>
+                    <div style="display:grid; gap:0.8rem; color:var(--text); text-align:left;">
+                        <div><strong>Nama:</strong> <span id="display-name">-</span></div>
+                        <div><strong>Nomor HP:</strong> <span id="display-phone">-</span></div>
+                        <div><strong>Cabang:</strong> <span id="display-branch">-</span></div>
+                    </div>
+                </div>
+                <button class="btn btn-primary" style="margin-top:2rem;" onclick="navigateTo('beranda.html')">Kembali ke Beranda</button>
+            </div>
+        </section>
+    </main>
+
+    <div id="app-toast" class="toast"></div>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-    
-    <!-- Konfigurasi Firebase -->
-    <script>
-        let USE_FIREBASE = true;
-        let db = null;
-        
-        try {
-            const firebaseConfig = {
-                apiKey: "AIzaSyDvMKKIFUD2Ys3MtdxDRiNFdx_OKckChpE",
-                authDomain: "idboxplay-7a27f.firebaseapp.com",
-                databaseURL: "https://idboxplay-7a27f-default-rtdb.asia-southeast1.firebasedatabase.app",
-                projectId: "idboxplay-7a27f",
-                storageBucket: "idboxplay-7a27f.firebasestorage.app",
-                messagingSenderId: "553757223806",
-                appId: "1:553757223806:web:629c586dc82fd8e5dca12f",
-                measurementId: "G-J6CMR1W449"
-            };
-            
-            firebase.initializeApp(firebaseConfig);
-            db = firebase.database();
-            console.log("Firebase initialized successfully");
-        } catch (error) {
-            console.error("Error initializing Firebase, falling back to localStorage:", error);
-            USE_FIREBASE = false;
-        }
-    </script>
-    
-    <!-- JS Eksternal -->
-    <script src="js/script.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>

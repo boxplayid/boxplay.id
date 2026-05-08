@@ -1,354 +1,266 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin - Playbox Billing</title>
-    <!-- Font & Icons -->
+    <title>Dashboard Admin - Boxplay X NUD</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
-    <!-- CSS Eksternal -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-
-    <!-- DASHBOARD LAYOUT -->
-    <div class="dashboard-layout">
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-brand">
-                    <i class="fas fa-bolt"></i>
-                    <span>BOXPLAY Admin</span>
-                </div>
-            </div>
-            
-            <nav class="sidebar-nav">
-                <div class="nav-item">
-                    <a href="#" class="nav-link active" data-section="overview">
-                        <i class="fas fa-chart-line"></i>
-                        <span>Overview</span>
-                    </a>
-                </div>
-                <div class="nav-item">
-                    <a href="#" class="nav-link" data-section="units">
-                        <i class="fas fa-gamepad"></i>
-                        <span>Unit Management</span>
-                    </a>
-                </div>
-                <div class="nav-item">
-                    <a href="#" class="nav-link" data-section="products">
-                        <i class="fas fa-utensils"></i>
-                        <span>Product Management</span>
-                    </a>
-                </div>
-                <div class="nav-item">
-                    <a href="#" class="nav-link" data-section="promos">
-                        <i class="fas fa-tags"></i>
-                        <span>Promo Management</span>
-                    </a>
-                </div>
-                <div class="nav-item">
-                    <a href="#" class="nav-link" data-section="history">
-                        <i class="fas fa-history"></i>
-                        <span>Transaction History</span>
-                    </a>
-                </div>
-            </nav>
-            
-            <div class="sidebar-footer">
-                <div class="flex items-center gap-4" id="user-profile">
-                    <div class="profile-avatar">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div>
-                        <div id="admin-name" style="font-weight: 700; color: var(--primary); font-size: 0.9rem;">ADMIN</div>
-                        <div style="font-size: 0.7rem; color: var(--text-muted);">Logged in</div>
-                    </div>
-                </div>
-                <button class="btn btn-outline w-full" style="margin-top: 1rem; border-color: var(--danger); color: var(--danger);" onclick="logout()">
-                    <i class="fas fa-sign-out-alt"></i> LOGOUT
-                </button>
-            </div>
-        </aside>
-
-        <!-- MAIN CONTENT -->
-        <main class="main-content">
-            <!-- OVERVIEW SECTION -->
-            <div id="overview-section" class="content-section active">
-                <div class="section-header">
-                    <h1 class="section-title">Dashboard Overview</h1>
-                    <p class="section-subtitle">Monitor performa bisnis Playbox secara real-time</p>
-                </div>
-                
-                <!-- Stats Summary -->
-                <div class="dashboard-grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); margin-bottom: 2rem;">
-                    <div class="unit-card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1.5rem;">
-                        <div style="background: rgba(0, 255, 157, 0.1); width: 60px; height: 60px; border-radius: 1rem; display: flex; align-items: center; justify-content: center;">
-                            <i class="fas fa-wallet" style="font-size: 1.5rem; color: var(--primary);"></i>
-                        </div>
-                        <div>
-                            <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Total Pendapatan</div>
-                            <div id="stats-income" style="font-size: 1.5rem; font-weight: 800;">Rp 0</div>
-                        </div>
-                    </div>
-                    <div class="unit-card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1.5rem;">
-                        <div style="background: rgba(112, 0, 255, 0.1); width: 60px; height: 60px; border-radius: 1rem; display: flex; align-items: center; justify-content: center;">
-                            <i class="fas fa-gamepad" style="font-size: 1.5rem; color: var(--secondary);"></i>
-                        </div>
-                        <div>
-                            <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Unit Aktif</div>
-                            <div id="stats-active" style="font-size: 1.5rem; font-weight: 800;">0 / 0</div>
-                        </div>
-                    </div>
-                    <div class="unit-card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1.5rem;">
-                        <div style="background: rgba(245, 158, 11, 0.1); width: 60px; height: 60px; border-radius: 1rem; display: flex; align-items: center; justify-content: center;">
-                            <i class="fas fa-users" style="font-size: 1.5rem; color: var(--warning);"></i>
-                        </div>
-                        <div>
-                            <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Total Antrian</div>
-                            <div id="stats-waiting" style="font-size: 1.5rem; font-weight: 800;">0</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
-                    <div>
-                        <h3 class="section-title" style="font-size: 1.5rem; margin-bottom: 1rem;">Monitor Unit Real-time</h3>
-                        <div class="dashboard-grid" id="units-container" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
-                            <!-- Unit cards will be generated by JS -->
-                        </div>
-                    </div>
-                    <div>
-                        <h3 class="section-title" style="font-size: 1.5rem; margin-bottom: 1rem;">Antrian (Waiting List)</h3>
-                        <div class="history-card" id="waiting-list-admin" style="max-height: 600px; overflow-y: auto;">
-                            <!-- Waiting list items injected here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- UNITS SECTION -->
-            <div id="units-section" class="content-section">
-                <div class="section-header">
-                    <h1 class="section-title">Unit Management</h1>
-                    <p class="section-subtitle">Kelola unit PlayStation dan monitor status real-time</p>
-                </div>
-                <div class="dashboard-grid" id="units-management-container" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
-                    <!-- Unit management cards will be generated by JS -->
-                </div>
-            </div>
-
-            <!-- PRODUCTS SECTION -->
-            <div id="products-section" class="content-section">
-                <div class="section-header">
-                    <h1 class="section-title">Product Management</h1>
-                    <p class="section-subtitle">Kelola menu snacks & drinks, stok, dan harga</p>
-                </div>
-                
-                <div class="history-card" style="padding: 2.5rem; margin-bottom: 2rem;">
-                    <div class="dashboard-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
-                        <div class="form-group">
-                            <label>Nama Produk</label>
-                            <input type="text" id="prod-name-input" class="form-input" placeholder="Nama Produk">
-                        </div>
-                        <div class="form-group">
-                            <label>Harga (Rp)</label>
-                            <input type="number" id="prod-price-input" class="form-input" placeholder="Contoh: 15000">
-                        </div>
-                        <div class="form-group">
-                            <label>Kategori</label>
-                            <select id="prod-cat-input" class="form-input">
-                                <option value="Minuman">Minuman</option>
-                                <option value="Snacks">Snacks</option>
-                                <option value="Paket">Paket</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Stok Awal</label>
-                            <input type="number" id="prod-stock-input" class="form-input" placeholder="Contoh: 10" value="10">
-                        </div>
-                        <div class="form-group">
-                            <label>Ikon FontAwesome</label>
-                            <input type="text" id="prod-icon-input" class="form-input" placeholder="fas fa-utensils" value="fas fa-utensils">
-                        </div>
-                    </div>
-                    <button class="btn btn-primary" onclick="addProduct()">
-                        <i class="fas fa-plus"></i> TAMBAH PRODUK BARU
+<body data-page="dashboard">
+    <div class="header">
+        <div class="container navbar">
+            <a class="brand" href="beranda.html">
+                <span class="brand-icon"><i class="fas fa-bolt"></i></span>
+                <span class="brand-name">BOXPLAY Admin</span>
+            </a>
+            <div class="navbar-center">
+                <div class="dropdown">
+                    <button class="nav-link dropdown-toggle" onclick="toggleDropdown(event)">
+                        <i class="fas fa-clock"></i> <span>Antrian Waiting</span>
                     </button>
-                </div>
-
-                <div id="product-manage-list">
-                    <!-- Product management items will be injected here -->
-                </div>
-            </div>
-
-            <!-- PROMOS SECTION -->
-            <div id="promos-section" class="content-section">
-                <div class="section-header">
-                    <h1 class="section-title">Promo Management</h1>
-                    <p class="section-subtitle">Kelola promo dan diskon untuk menarik pelanggan</p>
-                </div>
-                
-                <div class="history-card" style="padding: 2.5rem; margin-bottom: 2rem;">
-                    <div class="dashboard-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
-                        <div class="form-group">
-                            <label>Tag Promo (e.g. LIMITED)</label>
-                            <input type="text" id="promo-tag-input" class="form-input" placeholder="Tag Promo">
-                        </div>
-                        <div class="form-group">
-                            <label>Judul Promo</label>
-                            <input type="text" id="promo-title-input" class="form-input" placeholder="Judul Promo">
-                        </div>
-                        <div class="form-group">
-                            <label>Ikon FontAwesome</label>
-                            <input type="text" id="promo-icon-input" class="form-input" placeholder="fas fa-star" value="fas fa-star">
-                        </div>
-                        <div class="form-group">
-                            <label>Warna</label>
-                            <select id="promo-color-input" class="form-input">
-                                <option value="promo-1">Hijau</option>
-                                <option value="promo-2">Biru</option>
-                                <option value="promo-3">Orange</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Deskripsi</label>
-                            <textarea id="promo-desc-input" class="form-input" placeholder="Deskripsi promo" rows="2"></textarea>
-                        </div>
+                    <div class="dropdown-menu">
+                        <a href="#queue-section" class="dropdown-item" onclick="scrollToSection('queue-section')">
+                            <i class="fas fa-list"></i> Lihat Antrian
+                        </a>
+                        <a href="booking.html" class="dropdown-item">
+                            <i class="fas fa-plus"></i> Tambah Antrian
+                        </a>
                     </div>
-                    <button class="btn btn-primary" onclick="addPromo()">
-                        <i class="fas fa-plus"></i> TAMBAH PROMO BARU
-                    </button>
                 </div>
+                <div class="dropdown">
+                    <button class="nav-link dropdown-toggle" onclick="toggleDropdown(event)">
+                        <i class="fas fa-users"></i> <span>Data Customer</span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="#customer-section" class="dropdown-item" onclick="scrollToSection('customer-section'); return false;">
+                            <i class="fas fa-eye"></i> Lihat Data Customer
+                        </a>
+                        <a href="#" class="dropdown-item" onclick="showAddCustomerModal(); return false;">
+                            <i class="fas fa-user-plus"></i> Tambah Customer
+                        </a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="nav-link dropdown-toggle" onclick="toggleDropdown(event)">
+                        <i class="fas fa-tags"></i> <span>Promo</span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="#promo-section" class="dropdown-item" onclick="scrollToSection('promo-section'); return false;">
+                            <i class="fas fa-eye"></i> Lihat Promo
+                        </a>
+                        <a href="#" class="dropdown-item" onclick="showAddPromoModal(); return false;">
+                            <i class="fas fa-plus"></i> Tambah Promo
+                        </a>
+                    </div>
+                </div>
+            <div class="nav-actions">
+                <button id="display-link" class="btn btn-secondary">TV Display</button>
+                <button id="logout-button" class="btn btn-primary">Logout</button>
+            </div>
+            <button class="menu-toggle" id="menu-toggle" onclick="toggleMenu()" aria-label="Toggle menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+        <nav class="mobile-menu" id="mobile-menu">
+            <div class="mobile-menu-content">
+                <a href="beranda.html" class="mobile-menu-item">
+                    <i class="fas fa-home"></i>
+                    <span>Beranda</span>
+                </a>
+                <a href="booking.html" class="mobile-menu-item">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Buat Antrian</span>
+                </a>
+                <a href="dashboard.html" class="mobile-menu-item">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="pages/display.html" class="mobile-menu-item">
+                    <i class="fas fa-tv"></i>
+                    <span>Tampilan TV</span>
+                </a>
+                <a href="#" onclick="logout()" class="mobile-menu-item">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </nav>
+    </div>
 
-                <div id="promo-manage-list">
-                    <!-- Promo management items will be injected here -->
+    <main class="container">
+        <section id="queue-section" class="section">
+            <div class="dashboard-header">
+                <div>
+                    <p class="tag">Dashboard Admin</p>
+                    <h2 id="admin-welcome">Selamat datang</h2>
+                    <p class="section-subtitle">Kelola antrian secara realtime dan monitor status panggilan.</p>
+                </div>
+                <div style="text-align:right; color: var(--muted);">
+                    <div>Tanggal:</div>
+                    <div id="today-key" style="font-weight:700; color:var(--text); margin-top:0.5rem;"></div>
                 </div>
             </div>
 
-            <!-- HISTORY SECTION -->
-            <div id="history-section" class="content-section">
-                <div class="section-header">
-                    <h1 class="section-title">Transaction History</h1>
-                    <p class="section-subtitle">Riwayat transaksi dan billing hari ini</p>
+            <div class="grid info-grid" style="margin-bottom:2rem;">
+                <div class="card info-card">
+                    <h4>Antrian Menunggu</h4>
+                    <p id="summary-waiting">0</p>
                 </div>
-                
-                <div class="history-card">
-                    <table class="history-table">
+                <div class="card info-card">
+                    <h4>Nomor Dipanggil</h4>
+                    <p id="summary-playing">0</p>
+                </div>
+                <div class="card info-card">
+                    <h4>Antrian Selesai</h4>
+                    <p id="summary-done">0</p>
+                </div>
+            </div>
+
+            <div class="card page-card">
+                <div class="section-title">Daftar Antrian Hari Ini</div>
+                <div class="table-wrapper" style="margin-top:1.5rem;">
+                    <table class="table">
                         <thead>
                             <tr>
-                                <th>Unit</th>
-                                <th>Pelanggan</th>
-                                <th>Durasi</th>
-                                <th>Total Biaya</th>
-                                <th>Waktu Selesai</th>
+                                <th>No</th>
+                                <th>Nama</th>
+                                <th>HP</th>
+                                <th>Status</th>
+                                <th>Waktu</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
-                        <tbody id="history-body">
-                            <!-- History rows will be injected here -->
+                        <tbody id="queue-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Data Customer Section -->
+        <section id="customer-section" class="section">
+            <div class="section-title">Data Customer</div>
+            <div class="section-subtitle">Kelola data pelanggan Boxplay</div>
+            <div class="card page-card">
+                <div class="table-wrapper">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nama</th>
+                                <th>Email</th>
+                                <th>No HP</th>
+                                <th>Alamat</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="customer-table-body">
+                            <!-- Customer data will be populated here -->
                         </tbody>
                     </table>
                 </div>
             </div>
-        </main>
-    </div>
+        </section>
 
-    <!-- MODAL EDIT HISTORY -->
-    <div id="modal-edit-history" class="modal-overlay hidden">
-        <div class="modal">
-            <h2>Edit Transaksi</h2>
-            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Ubah data transaksi</p>
-            <div class="dashboard-grid" style="grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1rem;">
-                <input type="hidden" id="edit-history-idx">
-                <input type="text" id="edit-history-customer" class="form-input" placeholder="Nama Pelanggan">
-                <input type="text" id="edit-history-duration" class="form-input" placeholder="Durasi (misal: 01:30:45)">
-                <input type="number" id="edit-history-cost" class="form-input" placeholder="Total Biaya" min="0">
+        <!-- Promo Section -->
+        <section id="promo-section" class="section">
+            <div class="section-title">Kelola Promo</div>
+            <div class="section-subtitle">Tambah dan kelola promo Boxplay</div>
+            <div class="card page-card">
+                <div class="table-wrapper">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Judul Promo</th>
+                                <th>Deskripsi</th>
+                                <th>Diskon (%)</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="promo-table-body">
+                            <!-- Promo data will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div class="flex gap-4">
-                <button class="btn btn-outline w-full" onclick="closeEditHistoryModal()">Batal</button>
-                <button class="btn btn-primary w-full" onclick="saveEditHistory()">Simpan</button>
+        </section>
+    </main>
+
+    <!-- Modal untuk Tambah Customer -->
+    <div id="add-customer-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Tambah Data Customer</h3>
+                <button class="modal-close" onclick="closeModal('add-customer-modal')">&times;</button>
             </div>
+            <form id="add-customer-form">
+                <div class="form-group">
+                    <label for="customer-name">Nama Lengkap</label>
+                    <input type="text" id="customer-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="customer-email">Email</label>
+                    <input type="email" id="customer-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="customer-phone">No HP</label>
+                    <input type="tel" id="customer-phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="customer-address">Alamat</label>
+                    <textarea id="customer-address" rows="3"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('add-customer-modal')">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
         </div>
     </div>
 
-    <!-- MODAL START SESSION -->
-    <div id="modal-start" class="modal-overlay hidden">
-        <div class="modal">
-            <h2 id="modal-title">Mulai Sesi - Unit 01</h2>
-            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Masukkan nama pelanggan dan durasi sesi.</p>
-            <div class="dashboard-grid" style="grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1rem;">
-                <input type="text" id="cust-name-input" class="form-input" placeholder="Nama Pelanggan" autofocus>
-                <input type="number" id="cust-duration-input" class="form-input" placeholder="Durasi sesi (menit)" min="1" value="60">
+    <!-- Modal untuk Tambah Promo -->
+    <div id="add-promo-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Tambah Promo Baru</h3>
+                <button class="modal-close" onclick="closeModal('add-promo-modal')">&times;</button>
             </div>
-            <div class="flex gap-4">
-                <button class="btn btn-outline w-full" onclick="closeModal()">Batal</button>
-                <button class="btn btn-primary w-full" id="confirm-start-btn">Mulai Sekarang</button>
-            </div>
+            <form id="add-promo-form">
+                <div class="form-group">
+                    <label for="promo-title">Judul Promo</label>
+                    <input type="text" id="promo-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="promo-description">Deskripsi</label>
+                    <textarea id="promo-description" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="promo-discount">Diskon (%)</label>
+                    <input type="number" id="promo-discount" min="0" max="100" required>
+                </div>
+                <div class="form-group">
+                    <label for="promo-status">Status</label>
+                    <select id="promo-status" required>
+                        <option value="active">Aktif</option>
+                        <option value="inactive">Tidak Aktif</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('add-promo-modal')">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
         </div>
     </div>
 
-    <!-- Firebase SDK -->
+    <div id="app-toast" class="toast"></div>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-    
-    <!-- Konfigurasi Firebase -->
-    <script>
-        let USE_FIREBASE = true;
-        let db = null;
-        
-        try {
-            const firebaseConfig = {
-                apiKey: "AIzaSyDvMKKIFUD2Ys3MtdxDRiNFdx_OKckChpE",
-                authDomain: "idboxplay-7a27f.firebaseapp.com",
-                databaseURL: "https://idboxplay-7a27f-default-rtdb.asia-southeast1.firebasedatabase.app",
-                projectId: "idboxplay-7a27f",
-                storageBucket: "idboxplay-7a27f.firebasestorage.app",
-                messagingSenderId: "553757223806",
-                appId: "1:553757223806:web:629c586dc82fd8e5dca12f",
-                measurementId: "G-J6CMR1W449"
-            };
-            
-            firebase.initializeApp(firebaseConfig);
-            db = firebase.database();
-            console.log("Firebase initialized successfully");
-        } catch (error) {
-            console.error("Error initializing Firebase, falling back to localStorage:", error);
-            USE_FIREBASE = false;
-        }
-    </script>
-    
-    <!-- JS Eksternal -->
-    <script src="js/script.js"></script>
-    <script>
-        // Navigation handler for sidebar
-        document.addEventListener('DOMContentLoaded', function() {
-            const navLinks = document.querySelectorAll('.nav-link');
-            
-            navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    // Remove active class from all links
-                    navLinks.forEach(l => l.classList.remove('active'));
-                    
-                    // Add active class to clicked link
-                    this.classList.add('active');
-                    
-                    // Hide all sections
-                    const sections = document.querySelectorAll('.content-section');
-                    sections.forEach(s => s.classList.remove('active'));
-                    
-                    // Show target section
-                    const targetSection = this.getAttribute('data-section');
-                    const targetElement = document.getElementById(targetSection + '-section');
-                    if (targetElement) {
-                        targetElement.classList.add('active');
-                    }
-                });
-            });
-        });
-    </script>
+    <script src="js/app.js"></script>
 </body>
 </html>

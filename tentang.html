@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tentang Kami - Boxplayid</title>
+    <link rel="icon" type="image/jpeg" href="foto_boxplay/icon_aplikasi.jpeg">
+    <meta name="theme-color" content="#090b10">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="about">
+    <div class="header">
+        <div class="container navbar">
+            <a class="brand" href="beranda.html">
+                <span class="brand-icon"><img src="foto_boxplay/icon_aplikasi.jpeg" alt="Logo Boxplay" /></span>
+                <span class="brand-name">BOXPLAYID</span>
+            </a>
+            <nav class="navbar-center">
+                <a class="nav-link" href="beranda.html">
+                    <i class="fas fa-home"></i> <span>Home</span>
+                </a>
+                <a class="nav-link" href="waiting.html">
+                    <i class="fas fa-list"></i> <span>Antrian</span>
+                </a>                <a class="nav-link" href="cabang.html">
+                    <i class="fas fa-store"></i> <span>Cabang</span>
+                </a>
+                <a class="nav-link" href="portofolio.html">
+                    <i class="fas fa-images"></i> <span>Portofolio</span>
+                </a>
+                <a class="nav-link active" href="tentang.html">
+                    <i class="fas fa-info-circle"></i> <span>Tentang Kami</span>
+                </a>
+            </nav>
+            <div class="navbar-end">
+                <button class="btn btn-secondary btn-icon admin-login" onclick="navigateTo('login.html')" title="Login Admin">
+                    <i class="fas fa-user-shield"></i>
+                </button>
+            </div>
+            <button class="menu-toggle" id="menu-toggle" onclick="toggleMenu()" aria-label="Toggle menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+        <nav class="mobile-menu" id="mobile-menu">
+            <div class="mobile-menu-content">
+                <a href="beranda.html" class="mobile-menu-item">
+                    <i class="fas fa-home"></i>
+                    <span>Beranda</span>
+                </a>
+                <a href="waiting.html" class="mobile-menu-item">
+                    <i class="fas fa-list"></i>
+                    <span>Daftar Antrian</span>
+                </a>
+                <a href="beranda.html#menu" class="mobile-menu-item">
+                    <i class="fas fa-utensils"></i>
+                    <span>Pesan Menu</span>
+                </a>
+                <a href="cabang.html" class="mobile-menu-item">
+                    <i class="fas fa-store"></i>
+                    <span>Cabang</span>
+                </a>
+                <a href="portofolio.html" class="mobile-menu-item">
+                    <i class="fas fa-images"></i>
+                    <span>Portofolio</span>
+                </a>
+                <a href="checkout.html" class="mobile-menu-item">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Bayar Pesanan</span>
+                </a>
+                <a href="tentang.html" class="mobile-menu-item">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Tentang Kami</span>
+                </a>
+                <a href="login.html" class="mobile-menu-item">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Admin</span>
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <main class="container">
+        <!-- Team Hero Slider -->
+        <section class="hero" style="padding-top: 2rem;">
+            <div class="hero-visual" style="height: 650px; max-width: 450px; margin: 0 auto;">
+                <div class="hero-slider" id="team-slider">
+                    <div class="hero-slide active" data-image="Team_Boxplay/1.jpg">
+                        <div class="slide-overlay">
+                            <h2>Raihan Abdillah</h2>
+                            <p>Operator Boxplay yang berdedikasi tinggi dalam melayani pelanggan.</p>
+                        </div>
+                    </div>
+                    <div class="hero-slide" data-image="Team_Boxplay/2.jpg">
+                        <div class="slide-overlay">
+                            <h2>Al Fikri Ramadhan</h2>
+                            <p>Profesional IT yang memastikan seluruh sistem billing berjalan lancar.</p>
+                        </div>
+                    </div>
+                    <div class="hero-slide" data-image="Team_Boxplay/3.png">
+                        <div class="slide-overlay">
+                            <h2>Thomas</h2>
+                            <p>Operational Director yang mengawasi standar kualitas layanan Boxplay.</p>
+                        </div>
+                    </div>
+                    <div class="hero-slide" data-image="Team_Boxplay/4.png">
+                        <div class="slide-overlay">
+                            <h2>Dzakwan Farid</h2>
+                            <p>Operator berpengalaman yang siap membantu kebutuhan gaming Anda.</p>
+                        </div>
+                    </div>
+                    <div class="hero-slide" data-image="Team_Boxplay/5.png">
+                        <div class="slide-overlay">
+                            <h2>Iqbal T Audino</h2>
+                            <p>Marketing Director yang membangun kolaborasi strategis Boxplay X NUD.</p>
+                        </div>
+                    </div>
+                    <div class="hero-slide" data-image="Team_Boxplay/6.png">
+                        <div class="slide-overlay">
+                            <h2>Our Support Team</h2>
+                            <p>Tim profesional di balik kenyamanan bermain Anda di Boxplay.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="slider-dots" id="team-slider-dots">
+                    <button class="slider-dot active" aria-label="Slide 1"></button>
+                    <button class="slider-dot" aria-label="Slide 2"></button>
+                    <button class="slider-dot" aria-label="Slide 3"></button>
+                    <button class="slider-dot" aria-label="Slide 4"></button>
+                    <button class="slider-dot" aria-label="Slide 5"></button>
+                    <button class="slider-dot" aria-label="Slide 6"></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hero Section -->
+        <section class="about-hero">
+            <div class="about-hero-content">
+                <h1>Tentang Boxplay </h1>
+                <p>Solusi Manajemen Rental PlayStation Modern di Kota Padang</p>
+            </div>
+        </section>
+
+        <!-- About Description -->
+        <section class="about-section">
+            <div class="about-intro">
+                <div class="about-logo-large">
+                    <img src="foto_boxplay/icon_aplikasi.jpeg" alt="Logo Boxplay ">
+                </div>
+                <div class="about-text">
+                    <h2>Kami adalah Boxplay </h2>
+                    <p class="lead-text">
+                        Boxplay adalah platform manajemen billing dan antrian terdepan untuk rental PlayStation gaming center di Kota Padang. Kami menghadirkan solusi teknologi yang merevolusi cara pengelolaan bisnis gaming dengan sistem antrian otomatis, billing real-time, dan integrasi seamless dengan cafe.
+                    </p>
+                    <p>
+                        Boxplay telah meningkatkan efisiensi operasional, memberikan pengalaman pelanggan yang superior, dan mengoptimalkan revenue mereka. Dengan team yang berpengalaman dan dedikasi terhadap inovasi, kami terus berkembang menjadi solusi terpercaya di industri gaming.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats-section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Player Nongkrong</div>
+                    <p>Nongkrong Tiap Hari Bersama BoxPlayId</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">24+</div>
+                    <div class="stat-label">Jam Bermain</div>
+                    <p>Puluhan Jam Bermain Setiap Hari</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">2B+</div>
+                    <div class="stat-label">Transaksi Aman</div>
+                    <p>Sistem Cepat,Aman,Dan Real-Time</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">99.9%</div>
+                    <div class="stat-label">Update</div>
+                    <p>Main Tanpa Hambatan</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Organization Structure -->
+        <section class="about-section">
+            <div class="section-header">
+                <h2>Struktur Organisasi</h2>
+                <p>Tim profesional yang berdedikasi untuk kesuksesan Boxplay</p>
+            </div>
+            <div class="structure-container">
+                <img src="foto_boxplay/Stucture_boxplay.jpeg" alt="Struktur Organisasi Boxplay" class="structure-image">
+            </div>
+        </section>
+
+        <!-- Mission & Vision -->
+        <section class="mission-vision-section">
+            <div class="mission-vision-grid">
+                <div class="mission-card">
+                    <div class="card-icon">
+                        <i class="fas fa-target"></i>
+                    </div>
+                    <h3>Misi Kami</h3>
+                    <p>
+                        Menyediakan solusi teknologi gaming yang inovatif, reliable, dan mudah digunakan untuk membantu gaming center dan cafe meningkatkan efisiensi operasional dan memberikan pengalaman terbaik kepada pelanggan.
+                    </p>
+                </div>
+                <div class="vision-card">
+                    <div class="card-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3>Visi Kami</h3>
+                    <p>
+                        Menjadi platform manajemen gaming terdepan di Asia Tenggara yang dipercaya oleh ribuan gaming center dengan teknologi cutting-edge dan layanan pelanggan yang luar biasa.
+                    </p>
+                </div>
+                <div class="value-card">
+                    <div class="card-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3>Nilai Kami</h3>
+                    <p>
+                        Inovasi, Integritas, Komitmen terhadap Excellence, dan Customer-Centric adalah fondasi yang memandu setiap keputusan dan tindakan kami dalam melayani klien.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="about-section">
+            <div class="section-header">
+                <h2>Mengapa Memilih Boxplay?</h2>
+                <p>Fitur dan keunggulan yang membuat Boxplay menjadi pilihan utama</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-zap"></i>
+                    </div>
+                    <h4>Sistem Antrian Real-Time</h4>
+                    <p>Manajemen antrian otomatis yang akurat dan transparan untuk pelanggan</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h4>Billing Otomatis</h4>
+                    <p>Perhitungan biaya yang akurat dan transparan tanpa kesalahan manual</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h4>Analytics & Reporting</h4>
+                    <p>Dashboard komprehensif untuk tracking performa bisnis dan revenue</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h4>Multi-Platform</h4>
+                    <p>Akses mudah dari web, mobile, dan berbagai perangkat lainnya</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h4>Keamanan Terjamin</h4>
+                    <p>Enkripsi tingkat enterprise dan backup data yang reliable</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h4>Support 24/7</h4>
+                    <p>Tim support yang siap membantu kapan saja Anda membutuhkan</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact-section">
+            <div class="section-header">
+                <h2>Hubungi Kami</h2>
+                <p>Siap menjawab pertanyaan dan membantu kesuksesan bisnis Anda</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h4>Alamat</h4>
+                    <p>Jl. Purus IV No. 5, Padang, Sumatera Barat<br>Indonesia</p>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <h4>Email</h4>
+                    <a href="mailto:boxplayid@gmail.com">boxplayid@gmail.com</a>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <h4>Telepon</h4>
+                    <a href="tel:+628557862734">+62 855-786-2734</a>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-share-alt"></i>
+                    <h4>Media Sosial</h4>
+                    <div class="social-links-contact">
+                        <a href="https://www.instagram.com/boxplay_nud" target="_blank" title="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.facebook.com/boxplay_nud" target="_blank" title="Facebook">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="https://www.tiktok.com/@boxplay_nud" target="_blank" title="TikTok">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                        <a href="https://wa.me/628557862734" target="_blank" title="WhatsApp">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="container">
+        <div class="footer-row">
+            <div class="footer-card">
+                <h4>Boxplay X NUD</h4>
+                <p>Solusi manajemen rental PlayStation modern nomor satu di Indonesia. Profesional, akurat, dan sangat mudah digunakan.</p>
+            </div>
+            <div class="footer-card">
+                <h4>Navigasi</h4>
+                <ul>
+                    <li><a href="beranda.html">Beranda</a></li>
+                    <li><a href="waiting.html">Daftar Antrian</a></li>
+                    <li><a href="cabang.html">Cabang</a></li>
+                    <li><a href="tentang.html">Tentang Kami</a></li>
+                    <li><a href="login.html">Admin</a></li>
+                </ul>
+            </div>
+            <div class="footer-card">
+                <h4>Bantuan</h4>
+                <ul>
+                    <li><a href="#">Pusat Bantuan</a></li>
+                    <li><a href="#">Cara Penggunaan</a></li>
+                    <li><a href="#">Kebijakan Privasi</a></li>
+                    <li><a href="#">Kontak Kami</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Playbox Billing System.</p>
+        </div>
+    </footer>
+
+    <div id="app-toast" class="toast"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>

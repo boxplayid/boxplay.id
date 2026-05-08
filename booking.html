@@ -1,122 +1,101 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pesan Unit - Playbox Billing</title>
-    <!-- Font & Icons -->
+    <title>Buat Antrian - Boxplay X NUD</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- CSS Eksternal -->
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-
-    <!-- NAVIGATION -->
-    <header>
-        <div class="container nav-content" style="display: flex; justify-content: space-between; align-items: center;">
-            <div class="brand" onclick="navigate('home')" style="display: flex; align-items: center; gap: 0.8rem; cursor: pointer;">
-                <div style="background: var(--primary); width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: var(--neon-glow);">
-                    <i class="fas fa-bolt" style="color: #000; font-size: 1.2rem;"></i>
-                </div>
-                <span class="brand-name">BOXPLAY x NUD</span>
+<body data-page="booking">
+    <div class="header">
+        <div class="container navbar">
+            <a class="brand" href="beranda.html">
+                <span class="brand-icon"><i class="fas fa-bolt"></i></span>
+                <span class="brand-name">BOXPLAY X NUD</span>
+            </a>
+            <div class="nav-actions">
+                <button class="btn btn-secondary" onclick="navigateTo('beranda.html')">Beranda</button>
+                <button class="btn btn-secondary" onclick="navigateTo('login.html')">Admin</button>
             </div>
-            
-            <div class="nav-right" id="nav-actions" style="display: flex; align-items: center; gap: 1.5rem;">
-                <div class="cart-btn" onclick="toggleCart()" style="position: relative; background: rgba(255,255,255,0.05); width: 45px; height: 45px; border-radius: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid var(--border); transition: 0.3s;">
-                    <i class="fas fa-shopping-bag" style="color: var(--primary);"></i>
-                    <span id="cart-badge" style="position: absolute; top: -5px; right: -5px; background: var(--accent); color: white; font-size: 0.7rem; font-weight: 900; width: 20px; height: 20px; border-radius: 8px; display: none; align-items: center; justify-content: center; border: 2px solid var(--bg-dark);">0</span>
-                </div>
-            </div>
+            <button class="menu-toggle" id="menu-toggle" onclick="toggleMenu()" aria-label="Toggle menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
         </div>
-    </header>
-
-    <div id="booking-section">
-        <div class="container" style="padding-top: 120px; padding-bottom: 60px;">
-            <div class="login-card" style="max-width: 550px; margin: 0 auto;">
-                <div style="text-align: center; margin-bottom: 2.5rem;">
-                    <i class="fas fa-calendar-check" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
-                    <h2 style="font-size: 2rem; font-weight: 800;">Form Pemesanan</h2>
-                    <div id="selected-unit-label" style="display: inline-block; background: rgba(0, 255, 157, 0.1); color: var(--primary); padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.85rem; font-weight: 700; margin-top: 0.5rem;">Pemesanan Umum</div>
-                    <p style="color: var(--text-muted); margin-top: 1rem;">Lengkapi data di bawah untuk mendapatkan nomor antrian.</p>
-                </div>
-                
-                <div class="form-group">
-                    <label>Nama Lengkap</label>
-                    <input type="text" id="booking-name" class="form-input" placeholder="Masukkan nama Anda">
-                </div>
-                <div class="form-group">
-                    <label>Nomor HP (WhatsApp)</label>
-                    <input type="tel" id="booking-phone" class="form-input" placeholder="0812xxxxxxxx">
-                </div>
-                <div class="form-group">
-                    <label>Pilih Cabang</label>
-                    <select id="booking-branch" class="form-input">
-                        <option value="NUD CAFE">NUD CAFE (Pusat)</option>
-                    </select>
-                </div>
-                
-                <button class="btn btn-primary w-full" style="padding: 1.2rem; margin-top: 1rem;" onclick="processBooking()">
-                    PESAN UNIT SEKARANG <i class="fas fa-paper-plane"></i>
-                </button>
-                <button class="btn btn-outline w-full" style="margin-top: 1rem; border-color: transparent; color: var(--text-muted);" onclick="navigate('home')">
-                    Batal & Kembali
-                </button>
+        <nav class="mobile-menu" id="mobile-menu">
+            <div class="mobile-menu-content">
+                <a href="beranda.html" class="mobile-menu-item">
+                    <i class="fas fa-home"></i>
+                    <span>Beranda</span>
+                </a>
+                <a href="booking.html" class="mobile-menu-item">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Buat Antrian</span>
+                </a>
+                <a href="login.html" class="mobile-menu-item">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Admin</span>
+                </a>
+                <a href="pages/display.html" class="mobile-menu-item">
+                    <i class="fas fa-tv"></i>
+                    <span>Tampilan TV</span>
+                </a>
             </div>
-        </div>
+        </nav>
     </div>
 
-    <!-- CART MODAL -->
-    <div id="cart-modal" class="modal-overlay hidden">
-        <div class="cart-modal-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                <h2 style="font-weight: 800; font-size: 1.5rem;"><i class="fas fa-shopping-basket" style="color: var(--primary);"></i> Pesanan Anda</h2>
-                <button onclick="toggleCart()" style="background:none; border:none; color: var(--text-muted); cursor:pointer; font-size: 1.5rem;"><i class="fas fa-times"></i></button>
-            </div>
-            <div id="cart-items-container" style="max-height: 400px; overflow-y: auto;"></div>
-            <div class="cart-footer">
-                <div class="flex justify-between" style="margin-bottom: 1.5rem;">
-                    <span style="font-weight: 600;">Total Bayar:</span>
-                    <span id="cart-total-price" style="font-weight: 800; color: var(--primary); font-size: 1.25rem;">Rp 0</span>
+    <main class="container">
+        <section class="section">
+            <div class="form-card card">
+                <div class="dashboard-header">
+                    <div>
+                        <p class="tag">Form Antrian</p>
+                        <h2>Pesan Nomor Antrian Sekarang</h2>
+                        <p class="section-subtitle">Isi nama dan nomor WhatsApp, sistem akan memproses nomor antrian otomatis.</p>
+                    </div>
                 </div>
-                <button class="btn btn-primary w-full" style="padding: 1.2rem;" onclick="goToCheckout()">
-                    CHECKOUT SEKARANG <i class="fas fa-arrow-right"></i>
-                </button>
+                <form id="booking-form">
+                    <div id="unit-selection-section" style="display: none;">
+                        <div class="form-group">
+                            <label>Unit yang Dipilih</label>
+                            <div id="selected-unit-display" class="selected-unit-card">
+                                <i class="fas fa-playstation"></i>
+                                <span id="selected-unit-label">Memuat...</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="booking-name">Nama Lengkap</label>
+                        <input id="booking-name" class="form-input" type="text" placeholder="Masukkan nama Anda" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="booking-phone">Nomor HP (Indonesia)</label>
+                        <input id="booking-phone" class="form-input" type="tel" placeholder="0812xxxxxxxx" required>
+                    </div>
+                    <div id="branch-selection-section">
+                        <div class="form-group">
+                            <label for="booking-branch">Pilih Cabang</label>
+                            <select id="booking-branch" class="form-select"></select>
+                        </div>
+                    </div>
+                    <div id="unit-selection-section-alt" style="display: none;">
+                        <div class="form-group">
+                            <label for="booking-unit">Pilih Unit</label>
+                            <select id="booking-unit" class="form-select"></select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Kirim Antrian</button>
+                </form>
             </div>
-        </div>
-    </div>
+        </section>
+    </main>
 
-    <!-- Firebase SDK -->
+    <div id="app-toast" class="toast"></div>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-    
-    <!-- Konfigurasi Firebase -->
-    <script>
-        let USE_FIREBASE = true;
-        let db = null;
-        
-        try {
-            const firebaseConfig = {
-                apiKey: "AIzaSyDvMKKIFUD2Ys3MtdxDRiNFdx_OKckChpE",
-                authDomain: "idboxplay-7a27f.firebaseapp.com",
-                databaseURL: "https://idboxplay-7a27f-default-rtdb.asia-southeast1.firebasedatabase.app",
-                projectId: "idboxplay-7a27f",
-                storageBucket: "idboxplay-7a27f.firebasestorage.app",
-                messagingSenderId: "553757223806",
-                appId: "1:553757223806:web:629c586dc82fd8e5dca12f",
-                measurementId: "G-J6CMR1W449"
-            };
-            
-            firebase.initializeApp(firebaseConfig);
-            db = firebase.database();
-            console.log("Firebase initialized successfully");
-        } catch (error) {
-            console.error("Error initializing Firebase, falling back to localStorage:", error);
-            USE_FIREBASE = false;
-        }
-    </script>
-    
-    <!-- JS Eksternal -->
-    <script src="js/script.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>

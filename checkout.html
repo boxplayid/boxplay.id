@@ -3,204 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout Pesanan - Playbox Billing</title>
-    <!-- Font & Icons -->
+    <title>Checkout - Boxplay X NUD</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
-    <!-- CSS Eksternal -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-    <style>
-        .checkout-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            padding-top: 120px;
-        }
-        @media (max-width: 768px) {
-            .checkout-container { grid-template-columns: 1fr; }
-        }
-        .qris-display {
-            background: white;
-            padding: 2rem;
-            border-radius: 1.5rem;
-            text-align: center;
-            margin-top: 1.5rem;
-            display: none;
-            animation: fadeIn 0.5s ease-out;
-        }
-        .qris-img {
-            width: 250px;
-            height: 250px;
-            margin: 0 auto 1rem;
-            background: #f0f0f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 4px solid #000;
-        }
-    </style>
 </head>
-<body>
-
-    <!-- NAVIGATION -->
-    <header>
-        <div class="container nav-content" style="display: flex; justify-content: space-between; align-items: center;">
-            <div class="brand" onclick="navigate('home')" style="display: flex; align-items: center; gap: 0.8rem; cursor: pointer;">
-                <div style="background: var(--primary); width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: var(--neon-glow);">
-                    <i class="fas fa-bolt" style="color: #000; font-size: 1.2rem;"></i>
-                </div>
-                <span class="brand-name">BOXPLAY x NUD</span>
+<body data-page="checkout">
+    <div class="header">
+        <div class="container navbar">
+            <a class="brand" href="beranda.html">
+                <span class="brand-icon"><i class="fas fa-bolt"></i></span>
+                <span class="brand-name">BOXPLAY X NUD</span>
+            </a>
+            <div class="nav-actions">
+                <button class="btn btn-secondary" onclick="navigateTo('beranda.html')">Menu</button>
+                <button class="btn btn-secondary" onclick="navigateTo('booking.html')">Buat Antrian</button>
+                <button class="btn btn-secondary" onclick="navigateTo('login.html')">Admin</button>
             </div>
+            <button class="menu-toggle" id="menu-toggle" onclick="toggleMenu()" aria-label="Toggle menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
         </div>
-    </header>
-
-    <div class="container">
-        <div class="checkout-container">
-            <!-- LEFT: Order Summary -->
-                <div class="history-card" style="padding: 2rem; margin-bottom: 2rem;">
-                    <h4 style="margin-bottom: 1.5rem; font-weight: 800; color: var(--primary);">Ringkasan Pesanan</h4>
-                    <div id="checkout-items-list">
-                        <!-- Items injected by JS -->
-                    </div>
-                    <div style="border-top: 2px dashed var(--border); margin-top: 1.5rem; padding-top: 1.5rem; display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: 900;">
-                        <span>TOTAL</span>
-                        <span id="checkout-total-price" style="color: var(--primary);">Rp 0</span>
-                    </div>
-                </div>
-
-            <!-- RIGHT: Form Checkout -->
-            <div class="login-card" style="max-width: 100%; margin: 0;">
-                <h2 style="font-weight: 800; margin-bottom: 2rem;"><i class="fas fa-user-check" style="color: var(--primary);"></i> Detail Pengiriman</h2>
-                
-                <div class="form-group">
-                    <label>Nama Lengkap</label>
-                    <input type="text" id="checkout-name" class="form-input" placeholder="Nama Anda">
-                </div>
-                <div class="form-group">
-                    <label>Nomor HP (WhatsApp)</label>
-                    <input type="tel" id="checkout-phone" class="form-input" placeholder="0812xxxxxxxx">
-                </div>
-                <div class="form-group">
-                    <label>Nomor Meja / Posisi Duduk</label>
-                    <input type="text" id="checkout-table" class="form-input" placeholder="Contoh: Meja 05 atau Sofa Depan">
-                </div>
-                <div class="form-group">
-                    <label>Metode Pembayaran</label>
-                    <select id="checkout-method" class="form-input" onchange="toggleQRIS()">
-                        <option value="cash">Tunai / Bayar di Kasir</option>
-                        <option value="qris">QRIS (Otomatis)</option>
-                    </select>
-                </div>
-
-                <!-- QRIS DISPLAY -->
-                <div id="qris-panel" class="qris-display" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border); padding: 2.5rem;">
-                    <p style="color: var(--primary); font-weight: 900; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 2px;">Scan QRIS Untuk Membayar</p>
-                    <div class="qris-img" style="background: #fff; padding: 1rem; border-radius: 1.5rem; border: none; box-shadow: 0 0 30px rgba(255,255,255,0.1);">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=PLAYBOX_BILLING_PAYMENT" alt="QRIS Placeholder" style="width: 100%; height: 100%;">
-                    </div>
-                    <div style="background: rgba(214, 48, 49, 0.1); border-left: 4px solid #d63031; padding: 1rem; text-align: left; margin-top: 1.5rem; border-radius: 0.5rem;">
-                        <p style="color: #ff7675; font-size: 0.85rem; font-weight: 700;">
-                            <i class="fas fa-exclamation-triangle"></i> PENTING:
-                        </p>
-                        <p style="color: #fff; font-size: 0.8rem; margin-top: 0.3rem; line-height: 1.4;">Setelah membayar, pastikan Anda menekan tombol di bawah untuk mengirim konfirmasi dan bukti transfer ke WhatsApp admin.</p>
-                    </div>
-                </div>
-
-                <button id="pay-button" class="btn btn-primary w-full" style="padding: 1.2rem; margin-top: 2rem;" onclick="processCheckout()">
-                    KONFIRMASI & BAYAR SEKARANG
-                </button>
+        <nav class="mobile-menu" id="mobile-menu">
+            <div class="mobile-menu-content">
+                <a href="beranda.html" class="mobile-menu-item">
+                    <i class="fas fa-home"></i>
+                    <span>Beranda</span>
+                </a>
+                <a href="booking.html" class="mobile-menu-item">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Buat Antrian</span>
+                </a>
+                <a href="login.html" class="mobile-menu-item">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Admin</span>
+                </a>
+                <a href="pages/display.html" class="mobile-menu-item">
+                    <i class="fas fa-tv"></i>
+                    <span>Tampilan TV</span>
+                </a>
             </div>
-        </div>
+        </nav>
     </div>
 
-    <!-- RECEIPT TEMPLATE (Hidden from screen, visible for print) -->
-    <div id="receipt-print" style="display: none;">
-        <div class="receipt-container" style="color: black; background: white;">
-            <div style="text-align: center; border-bottom: 1px dashed #000; padding-bottom: 1rem; margin-bottom: 1rem;">
-                <h3 style="margin: 0;">PLAYBOX BILLING</h3>
-                <p style="font-size: 0.8rem; margin: 0.2rem 0;">Struk Pesanan Digital</p>
-                <p id="receipt-date" style="font-size: 0.7rem; margin: 0;"></p>
+    <main class="container">
+        <section class="section">
+            <div class="section-title">Checkout Pesanan</div>
+            <p class="section-subtitle">Lengkapi detail pelanggan dan pilih metode pembayaran sebelum mengirim pesanan ke kasir atau WhatsApp admin.</p>
+            <div class="checkout-grid">
+                <div class="checkout-summary card">
+                    <h3>Rincian Keranjang</h3>
+                    <div id="checkout-items-list" class="checkout-items-list"></div>
+                    <div class="checkout-total">
+                        <span>Total Pembayaran</span>
+                        <strong id="checkout-total-price">Rp 0</strong>
+                    </div>
+                </div>
+                <div class="checkout-form card">
+                    <div class="form-card">
+                        <div class="form-group">
+                            <label for="checkout-name">Nama Pelanggan</label>
+                            <input id="checkout-name" class="form-input" type="text" placeholder="Masukkan nama lengkap" />
+                        </div>
+                        <div class="form-group">
+                            <label for="checkout-phone">Nomor HP</label>
+                            <input id="checkout-phone" class="form-input" type="tel" placeholder="08xx xxxx xxxx" />
+                        </div>
+                        <div class="form-group">
+                            <label for="checkout-table">Meja / Posisi</label>
+                            <input id="checkout-table" class="form-input" type="text" placeholder="Contoh: Meja 3 / Kasir" />
+                        </div>
+                        <div class="form-group">
+                            <label for="checkout-method">Metode Pembayaran</label>
+                            <select id="checkout-method" class="form-select">
+                                <option value="tunai">Tunai</option>
+                                <option value="qris">QRIS</option>
+                                <option value="transfer">Transfer Bank</option>
+                            </select>
+                        </div>
+                        <div class="note-box" style="margin-bottom: 1rem;">
+                            <p style="color: var(--muted);">Pilih QRIS jika pelanggan sudah membayar digital. Untuk transfer bank, pastikan customer mengirim bukti saat pesan selesai.</p>
+                        </div>
+                        <button id="pay-button" class="btn btn-primary w-full" type="button" onclick="processCheckout()">Bayar Sekarang</button>
+                    </div>
+                </div>
             </div>
-            
-            <div style="margin-bottom: 1rem; font-size: 0.8rem;">
-                <p>Nama: <span id="receipt-name"></span></p>
-                <p>Meja: <span id="receipt-table"></span></p>
-                <p>Bayar: <span id="receipt-method"></span></p>
-            </div>
+        </section>
+    </main>
 
-            <div style="border-bottom: 1px dashed #000; padding-bottom: 0.5rem; margin-bottom: 0.5rem;">
-                <table style="width: 100%; font-size: 0.8rem;">
-                    <thead>
-                        <tr style="text-align: left;">
-                            <th>Item</th>
-                            <th>Qty</th>
-                            <th style="text-align: right;">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody id="receipt-items-body">
-                        <!-- Items injected here -->
-                    </tbody>
-                </table>
+    <footer class="container">
+        <div class="footer-row">
+            <div class="footer-card">
+                <h4>Boxplay X NUD</h4>
+                <p>Selesaikan pesanan dengan sistem checkout yang terintegrasi, praktis untuk kasir dan cashier.</p>
             </div>
-
-            <div style="text-align: right; font-weight: 800;">
-                <p>TOTAL: <span id="receipt-total"></span></p>
-            </div>
-
-            <div style="text-align: center; margin-top: 2rem; border-top: 1px dashed #000; padding-top: 1rem;">
-                <p style="font-size: 0.7rem;">Terima kasih atas pesanan Anda!</p>
-                <p style="font-size: 0.6rem; margin-top: 0.5rem;">Simpan struk ini sebagai bukti pembayaran.</p>
+            <div class="footer-card">
+                <h4>Navigasi Cepat</h4>
+                <ul>
+                    <li><a href="beranda.html">Beranda</a></li>
+                    <li><a href="booking.html">Buat Antrian</a></li>
+                    <li><a href="login.html">Admin</a></li>
+                    <li><a href="pages/display.html">TV Display</a></li>
+                </ul>
             </div>
         </div>
-    </div>
+    </footer>
 
-    <!-- Firebase SDK -->
+    <div id="app-toast" class="toast"></div>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-    
-    <!-- Konfigurasi Firebase -->
-    <script>
-        let USE_FIREBASE = true;
-        let db = null;
-        
-        try {
-            const firebaseConfig = {
-                apiKey: "AIzaSyDvMKKIFUD2Ys3MtdxDRiNFdx_OKckChpE",
-                authDomain: "idboxplay-7a27f.firebaseapp.com",
-                databaseURL: "https://idboxplay-7a27f-default-rtdb.asia-southeast1.firebasedatabase.app",
-                projectId: "idboxplay-7a27f",
-                storageBucket: "idboxplay-7a27f.firebasestorage.app",
-                messagingSenderId: "553757223806",
-                appId: "1:553757223806:web:629c586dc82fd8e5dca12f",
-                measurementId: "G-J6CMR1W449"
-            };
-            
-            firebase.initializeApp(firebaseConfig);
-            db = firebase.database();
-            console.log("Firebase initialized successfully");
-        } catch (error) {
-            console.error("Error initializing Firebase, falling back to localStorage:", error);
-            USE_FIREBASE = false;
-        }
-    </script>
-    
-    <!-- JS Eksternal -->
+    <script src="js/app.js"></script>
     <script src="js/script.js"></script>
-    <script>
-        function toggleQRIS() {
-            const method = document.getElementById('checkout-method').value;
-            const panel = document.getElementById('qris-panel');
-            if (panel) {
-                panel.style.display = method === 'qris' ? 'block' : 'none';
-            }
-        }
-
-        // Memastikan inisialisasi berjalan saat DOM siap
-        document.addEventListener('DOMContentLoaded', function() {
-            if (typeof initPage === 'function') {
-                initPage();
-            }
-        });
-    </script>
 </body>
 </html>

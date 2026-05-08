@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portofolio - Boxplayid</title>
+    <link rel="icon" type="image/jpeg" href="foto_boxplay/icon_aplikasi.jpeg">
+    <meta name="theme-color" content="#090b10">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="portfolio">
+    <div class="header">
+        <div class="container navbar">
+            <a class="brand" href="beranda.html">
+                <span class="brand-icon"><img src="foto_boxplay/icon_aplikasi.jpeg" alt="Logo Boxplay" /></span>
+                <span class="brand-name">BOXPLAYID</span>
+            </a>
+            <nav class="navbar-center">
+                <a class="nav-link" href="beranda.html">
+                    <i class="fas fa-home"></i> <span>Home</span>
+                </a>
+                <a class="nav-link" href="waiting.html">
+                    <i class="fas fa-list"></i> <span>Antrian</span>
+                </a>
+                <a class="nav-link" href="cabang.html">
+                    <i class="fas fa-store"></i> <span>Cabang</span>
+                </a>
+                <a class="nav-link active" href="portofolio.html">
+                    <i class="fas fa-images"></i> <span>Portofolio</span>
+                </a>
+                <a class="nav-link" href="tentang.html">
+                    <i class="fas fa-info-circle"></i> <span>Tentang Kami</span>
+                </a>
+            </nav>
+            <div class="navbar-end">
+                <button class="btn btn-secondary btn-icon admin-login" onclick="navigateTo('login.html')" title="Login Admin">
+                    <i class="fas fa-user-shield"></i>
+                </button>
+            </div>
+            <button class="menu-toggle" id="menu-toggle" onclick="toggleMenu()" aria-label="Toggle menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+        <nav class="mobile-menu" id="mobile-menu">
+            <div class="mobile-menu-content">
+                <a href="beranda.html" class="mobile-menu-item">
+                    <i class="fas fa-home"></i>
+                    <span>Beranda</span>
+                </a>
+                <a href="waiting.html" class="mobile-menu-item">
+                    <i class="fas fa-list"></i>
+                    <span>Daftar Antrian</span>
+                </a>
+                <a href="cabang.html" class="mobile-menu-item">
+                    <i class="fas fa-store"></i>
+                    <span>Cabang</span>
+                </a>
+                <a href="portofolio.html" class="mobile-menu-item">
+                    <i class="fas fa-images"></i>
+                    <span>Portofolio</span>
+                </a>
+                <a href="checkout.html" class="mobile-menu-item">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Bayar Pesanan</span>
+                </a>
+                <a href="tentang.html" class="mobile-menu-item">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Tentang Kami</span>
+                </a>
+                <a href="login.html" class="mobile-menu-item">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Admin</span>
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <main class="container">
+        <!-- Portfolio Hero Slider -->
+        <section class="hero" style="padding-top: 2rem;">
+            <div class="hero-visual" style="height: 500px; max-width: 850px; margin: 0 auto;">
+                <div class="hero-slider" id="portfolio-page-slider">
+                    <div class="hero-slide active" data-image="/portopolio_boxplay.id/1.jpg">
+                        <div class="slide-overlay">
+                            <h2>Inovasi Billing Terbaik</h2>
+                            <p>Sistem manajemen rental PlayStation yang revolusioner di Kota Padang.</p>
+                        </div>
+                    </div>
+                    <div class="hero-slide" data-image="/portopolio_boxplay.id/2.jpg">
+                        <div class="slide-overlay">
+                            <h2>User Interface Modern</h2>
+                            <p>Tampilan aplikasi yang intuitif dan sangat mudah digunakan oleh siapapun.</p>
+                        </div>
+                    </div>
+                    <div class="hero-slide" data-image="/portopolio_boxplay.id/3.jpg">
+                        <div class="slide-overlay">
+                            <h2>Sistem Antrian Real-Time</h2>
+                            <p>Pantau antrian secara langsung melalui smartphone Anda kapan saja.</p>
+                        </div>
+                    </div>
+                    <div class="hero-slide" data-image="/portopolio_boxplay.id/4.jpg">
+                        <div class="slide-overlay">
+                            <h2>Keamanan Transaksi</h2>
+                            <p>Integrasi pembayaran digital yang aman dan laporan keuangan yang akurat.</p>
+                        </div>
+                    </div>
+                    <div class="hero-slide" data-image="/portopolio_boxplay.id/5.jpg">
+                        <div class="slide-overlay">
+                            <h2>Pelaporan Lengkap</h2>
+                            <p>Kelola bisnis Anda dengan data analitik yang mendalam dan komprehensif.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="slider-dots" id="portfolio-page-dots">
+                    <button class="slider-dot active" aria-label="Slide 1"></button>
+                    <button class="slider-dot" aria-label="Slide 2"></button>
+                    <button class="slider-dot" aria-label="Slide 3"></button>
+                    <button class="slider-dot" aria-label="Slide 4"></button>
+                    <button class="slider-dot" aria-label="Slide 5"></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Content Columns -->
+        <section class="section">
+            <div class="section-header">
+                <h2>Mengapa Boxplay Menjadi Pilihan Utama?</h2>
+                <p>Kualitas dan dedikasi kami dalam membangun ekosistem gaming terbaik.</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-rocket"></i></div>
+                    <h4>Performa Tanpa Batas</h4>
+                    <p>Boxplay dibangun dengan teknologi terbaru untuk memastikan sistem berjalan lancar tanpa lag, memberikan kenyamanan maksimal bagi pengelola dan pelanggan.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-heart"></i></div>
+                    <h4>Layanan Sepenuh Hati</h4>
+                    <p>Kami tidak hanya menjual sistem, kami memberikan solusi. Tim support kami siap membantu operasional bisnis Anda agar selalu berjalan optimal 24/7.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h4>Integritas & Keamanan</h4>
+                    <p>Keamanan data dan transparansi transaksi adalah prioritas utama kami. Laporan billing Boxplay dijamin akurat dan tidak dapat dimanipulasi.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-users"></i></div>
+                    <h4>Ekosistem Komunitas</h4>
+                    <p>Boxplay membantu mempererat hubungan antar gamer melalui fitur-fitur sosial dan integrasi event komunitas yang seru dan dinamis.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Summary Banner -->
+        <section class="card" style="margin: 4rem 0; background: linear-gradient(135deg, var(--accent-soft) 0%, rgba(161, 75, 255, 0.1) 100%); text-align: center;">
+            <h2 style="font-size: 2rem; margin-bottom: 1rem;">Siap Bergabung dengan Revolusi Boxplay?</h2>
+            <p style="color: var(--muted); max-width: 800px; margin: 0 auto 2rem;">Jadilah bagian dari jaringan rental PlayStation paling modern dan efisien. Tingkatkan kualitas layanan Anda hari ini juga.</p>
+            <button class="btn btn-primary" onclick="navigateTo('tentang.html')">Hubungi Kami Sekarang</button>
+        </section>
+    </main>
+
+    <footer class="container">
+        <div class="footer-row">
+            <div class="footer-card">
+                <h4>Boxplay X NUD</h4>
+                <p>Solusi manajemen rental PlayStation modern nomor satu di Indonesia. Profesional, akurat, dan sangat mudah digunakan.</p>
+            </div>
+            <div class="footer-card">
+                <h4>Navigasi</h4>
+                <ul>
+                    <li><a href="beranda.html">Beranda</a></li>
+                    <li><a href="waiting.html">Daftar Antrian</a></li>
+                    <li><a href="cabang.html">Cabang</a></li>
+                    <li><a href="portofolio.html">Portofolio</a></li>
+                    <li><a href="tentang.html">Tentang Kami</a></li>
+                </ul>
+            </div>
+            <div class="footer-card">
+                <h4>Bantuan</h4>
+                <ul>
+                    <li><a href="#">Pusat Bantuan</a></li>
+                    <li><a href="#">Cara Penggunaan</a></li>
+                    <li><a href="#">Kebijakan Privasi</a></li>
+                    <li><a href="#">Kontak Kami</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Playbox Billing System.</p>
+        </div>
+    </footer>
+
+    <div id="app-toast" class="toast"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
