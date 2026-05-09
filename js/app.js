@@ -1,7 +1,38 @@
 // Firebase & app logic
+const DEFAULT_BRANCH_DATA = [
+    {
+        name: 'NUD HOUSE',
+        address: 'Nikmati suasana gaming premium dengan kopi terbaik.',
+        image: 'foto_cabang/nud.jpeg',
+        code: 'ND',
+        createdAt: Date.now()
+    },
+    {
+        name: 'PALIO SPITI',
+        address: 'Lokasi strategis untuk mabar seru bersama teman.',
+        image: 'foto_cabang/palio_spiti.jpeg',
+        code: 'PS',
+        createdAt: Date.now()
+    },
+    {
+        name: 'PIRZZY',
+        address: 'Fasilitas gaming lengkap dengan menu kekinian.',
+        image: 'foto_cabang/pirzy.jpeg',
+        code: 'PZ',
+        createdAt: Date.now()
+    },
+    {
+        name: 'WAROENG RADEN',
+        address: 'Tempat nongkrong asik dengan sentuhan tradisional.',
+        image: 'foto_cabang/waroeng_raden.jpeg',
+        code: 'RD',
+        createdAt: Date.now()
+    }
+];
+
 const APP_CONFIG = {
     admin: { username: 'admin', password: '12345' },
-    branches: ['NUD CAFE', 'PALIO SPITIO', 'PIRZY', 'WAROENG RADEN']
+    branches: DEFAULT_BRANCH_DATA.map(branch => branch.name)
 };
 
 const firebaseConfig = {
@@ -17,6 +48,29 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
+
+function ensureDefaultBranchData() {
+    let branches = JSON.parse(localStorage.getItem('pb_branches')) || [];
+    if (!Array.isArray(branches)) {
+        branches = [];
+    }
+
+    const existingNames = branches.map(branch => branch.name);
+    let updated = false;
+
+    DEFAULT_BRANCH_DATA.forEach(defaultBranch => {
+        if (!existingNames.includes(defaultBranch.name)) {
+            branches.push(defaultBranch);
+            updated = true;
+        }
+    });
+
+    if (updated || branches.length === 0) {
+        localStorage.setItem('pb_branches', JSON.stringify(branches));
+    }
+
+    return branches;
+}
 
 function getTodayKey() {
     const date = new Date();
@@ -170,13 +224,103 @@ function initPage() {
 }
 
 function initCabangPage() {
-    initBranchHeroSlider(); // Tambahkan hero slider cabang
+    // Ensure default cabang data exists before rendering
+    ensureDefaultBranchData();
+
+    // Load branch data and render hero slider and units sections
+    renderBranchHeroSlider();
+    initBranchHeroSlider();
+    
+    // Listen for branch data changes
+    if (typeof db !== 'undefined') {
+        db.ref('boxplay/branchData').on('value', (snapshot) => {
+            const branchData = snapshot.val();
+            if (branchData) {
+                localStorage.setItem('pb_branches', JSON.stringify(branchData));
+                renderBranchHeroSlider();
+                initBranchHeroSlider();
+            }
+        });
+        
+        // Listen for unit data changes
+        db.ref('boxplay/units').on('value', (snapshot) => {
+            const unitData = snapshot.val();
+            if (unitData) {
+                localStorage.setItem('pb_units', JSON.stringify(unitData));
+                renderBranchHeroSlider(); // This will re-render units sections too
+            }
+        });
+    }
+    
+    // Also listen for localStorage changes (fallback)
+    window.addEventListener('storage', (e) => {
+        if (e.key === 'pb_branches' || e.key === 'pb_units') {
+            renderBranchHeroSlider();
+            initBranchHeroSlider();
+        }
+    });
+}
+
+function renderBranchHeroSlider() {
+    const slider = document.getElementById('branch-hero-slider');
+    const dotsContainer = document.getElementById('branch-slider-dots');
+    
+    if (!slider || !dotsContainer) return;
+    
+    const branches = JSON.parse(localStorage.getItem('pb_branches')) || [
+        { name: 'NUD HOUSE', image: 'foto_cabang/nud.jpeg', address: 'Nikmati suasana gaming premium dengan kopi terbaik.' },
+        { name: 'PALIO SPITI', image: 'foto_cabang/palio_spiti.jpeg', address: 'Lokasi strategis untuk mabar seru bersama teman.' },
+        { name: 'PIRZZY', image: 'foto_cabang/pirzy.jpeg', address: 'Fasilitas gaming lengkap dengan menu kekinian.' },
+        { name: 'WAROENG RADEN', image: 'foto_cabang/waroeng_raden.jpeg', address: 'Tempat nongkrong asik dengan sentuhan tradisional.' }
+    ];
+    
+    console.log('Branches data:', branches);
+    
+    // Render slides
+    slider.innerHTML = branches.map((branch, idx) => `
+        <div class="hero-slide ${idx === 0 ? 'active' : ''}" data-image="${branch.image}">
+            <div class="slide-overlay">
+                <h2>${branch.name}</h2>
+                <p>${branch.address}</p>
+            </div>
+        </div>
+    `).join('');
+    
+    // Render dots
+    dotsContainer.innerHTML = branches.map((_, idx) => `
+        <button class="slider-dot ${idx === 0 ? 'active' : ''}"></button>
+    `).join('');
+    
+    // Render branch units sections
+    renderBranchUnitsSections(branches);
+}
+
+function renderBranchUnitsSections(branches) {
+    const container = document.getElementById('branch-units-container');
+    if (!container) return;
+    
     const units = JSON.parse(localStorage.getItem('pb_units')) || defaultUnits;
     
-    renderBranchUnits(units, 'NUD CAFE', 'nud-units-grid');
-    renderBranchUnits(units, 'PALIO SPITI', 'palio-units-grid');
-    renderBranchUnits(units, 'PIRZY', 'pirzy-units-grid');
-    renderBranchUnits(units, 'WAROENG RADEN', 'waroeng-units-grid');
+    container.innerHTML = branches.map(branch => {
+        const branchUnits = units.filter(u => u.branch === branch.name);
+        const containerId = branch.name.toLowerCase().replace(/\s+/g, '-') + '-units-grid';
+        
+        return `
+            <section class="section" id="${containerId.replace('-units-grid', '-units')}">
+                <div class="section-title">Unit ${branch.name}</div>
+                <p class="section-subtitle">${branchUnits.length} Unit PlayStation 4 tersedia di ${branch.name}.</p>
+                <div class="grid product-grid" id="${containerId}">
+                    <!-- Units will be populated by JavaScript -->
+                </div>
+            </section>
+        `;
+    }).join('');
+    
+    // Render units for each branch
+    branches.forEach(branch => {
+        const containerId = branch.name.toLowerCase().replace(/\s+/g, '-') + '-units-grid';
+        renderBranchUnits(units, branch.name, containerId);
+    });
 }
 
 let branchSlideIndex = 0;
@@ -1189,6 +1333,39 @@ function closeModal(id) {
     if (modal) modal.classList.remove('show');
 }
 
+function readImageFileInput(inputId) {
+    const input = document.getElementById(inputId);
+    if (!input || !input.files || !input.files[0]) return null;
+
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(input.files[0]);
+    });
+}
+
+function updateImagePreview(inputId, previewId) {
+    const input = document.getElementById(inputId);
+    const preview = document.getElementById(previewId);
+    if (!preview) return;
+
+    if (input && input.files && input.files[0]) {
+        preview.src = URL.createObjectURL(input.files[0]);
+        preview.hidden = false;
+    } else {
+        preview.hidden = true;
+        preview.src = '';
+    }
+}
+
+function clearImagePreview(previewId) {
+    const preview = document.getElementById(previewId);
+    if (!preview) return;
+    preview.hidden = true;
+    preview.src = '';
+}
+
 function scrollToSection(id) {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -1198,6 +1375,340 @@ window.showAddCustomerModal = () => showModal('add-customer-modal');
 window.showAddPromoModal = window.showAddPromoModal; // Pastikan menggunakan fungsi yang sudah di-update
 window.openEditPromoModal = openEditPromoModal; // Ekspos fungsi edit ke global
 window.deletePromo = deletePromo;
+
+// === UNIT & CABANG MANAGEMENT ===
+
+window.showAddBranchModal = () => {
+    const form = document.getElementById('add-branch-form');
+    if (form) form.reset();
+    clearImagePreview('branch-image-preview');
+    showModal('add-branch-modal');
+};
+
+window.showAddUnitModal = () => {
+    const form = document.getElementById('add-unit-form');
+    if (form) form.reset();
+    clearImagePreview('unit-image-preview');
+    
+    // Populate branch options
+    const branchSelect = document.getElementById('unit-branch');
+    if (branchSelect) {
+        branchSelect.innerHTML = '<option value="">Pilih cabang...</option>' + 
+            APP_CONFIG.branches.map(branch => `<option value="${branch}">${branch}</option>`).join('');
+    }
+    
+    showModal('add-unit-modal');
+};
+
+async function handleAddBranch() {
+    const name = document.getElementById('branch-name').value.trim();
+    const address = document.getElementById('branch-address').value.trim();
+    const image = await readImageFileInput('branch-image');
+    const code = document.getElementById('branch-code').value.trim().toUpperCase();
+
+    if (!name || !address || !image || !code) {
+        showToast('Harap isi semua field.', 'danger');
+        return;
+    }
+
+    if (code.length !== 2) {
+        showToast('Kode unit harus 2 huruf.', 'danger');
+        return;
+    }
+
+    try {
+        // Add to APP_CONFIG.branches
+        if (!APP_CONFIG.branches.includes(name)) {
+            APP_CONFIG.branches.push(name);
+        }
+
+        // Save branch data to localStorage
+        const branchData = {
+            name,
+            address,
+            image,
+            code,
+            createdAt: Date.now()
+        };
+
+        let branches = JSON.parse(localStorage.getItem('pb_branches')) || [];
+        branches.push(branchData);
+        localStorage.setItem('pb_branches', JSON.stringify(branches));
+
+        // Save to Firebase
+        if (typeof db !== 'undefined') {
+            await db.ref('boxplay/branches').set(APP_CONFIG.branches);
+            await db.ref('boxplay/branchData').set(branches);
+        }
+
+        showToast('Cabang berhasil ditambahkan!');
+        closeModal('add-branch-modal');
+        
+        // Refresh displays
+        renderBranchesGrid();
+        updateBranchOptions();
+        
+    } catch (error) {
+        console.error(error);
+        showToast('Gagal menambah cabang.', 'danger');
+    }
+}
+
+async function handleAddUnit() {
+    const branch = document.getElementById('unit-branch').value;
+    const name = document.getElementById('unit-name').value.trim();
+    const image = await readImageFileInput('unit-image') || 'foto_boxplay/unitps.jpg';
+
+    if (!branch || !name) {
+        showToast('Harap isi cabang dan nama unit.', 'danger');
+        return;
+    }
+
+    try {
+        // Get current units
+        let units = JSON.parse(localStorage.getItem('pb_units')) || defaultUnits;
+        
+        // Generate new ID
+        const maxId = Math.max(...units.map(u => u.id), 0);
+        const newId = maxId + 1;
+
+        const newUnit = {
+            id: newId,
+            name,
+            type: 'PS4',
+            branch,
+            status: 'idle',
+            customer: '',
+            startTime: null,
+            elapsed: 0,
+            image
+        };
+
+        units.push(newUnit);
+        localStorage.setItem('pb_units', JSON.stringify(units));
+
+        // Save to Firebase
+        if (typeof db !== 'undefined') {
+            await db.ref('boxplay/units').set(units);
+        }
+
+        showToast('Unit berhasil ditambahkan!');
+        closeModal('add-unit-modal');
+        
+        // Refresh displays
+        renderUnitsTable();
+        
+    } catch (error) {
+        console.error(error);
+        showToast('Gagal menambah unit.', 'danger');
+    }
+}
+
+function renderBranchesGrid() {
+    const container = document.getElementById('branches-grid');
+    if (!container) return;
+
+    const branches = JSON.parse(localStorage.getItem('pb_branches')) || [];
+    
+    if (branches.length === 0) {
+        container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--muted);">Belum ada cabang. Tambah cabang pertama!</p>';
+        return;
+    }
+
+    container.innerHTML = branches.map(branch => `
+        <div class="card" style="padding: 1.5rem;">
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                <div style="width: 60px; height: 60px; border-radius: 12px; overflow: hidden; background: var(--bg-secondary);">
+                    <img src="${branch.image}" alt="${branch.name}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='foto_boxplay/unitps.jpg'">
+                </div>
+                <div style="flex: 1;">
+                    <h4 style="margin: 0; color: var(--text);">${branch.name}</h4>
+                    <p style="margin: 0.5rem 0 0 0; color: var(--muted); font-size: 0.9rem;">Kode: ${branch.code}</p>
+                </div>
+            </div>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">${branch.address}</p>
+            <div style="display: flex; gap: 0.5rem;">
+                <button class="btn btn-secondary" onclick="editBranch('${branch.name}')" style="flex: 1; padding: 0.5rem;">
+                    <i class="fas fa-edit"></i> Edit
+                </button>
+                <button class="btn btn-danger" onclick="deleteBranch('${branch.name}')" style="padding: 0.5rem;">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderUnitsTable() {
+    const body = document.getElementById('units-table-body');
+    if (!body) return;
+
+    const units = JSON.parse(localStorage.getItem('pb_units')) || defaultUnits;
+    
+    body.innerHTML = units.map(unit => `
+        <tr>
+            <td>${unit.id}</td>
+            <td><strong>${unit.name}</strong></td>
+            <td><span class="tag">${unit.branch}</span></td>
+            <td><span class="status-chip ${unit.status === 'active' ? 'status-playing' : 'status-waiting'}">${unit.status === 'active' ? 'Digunakan' : 'Ready'}</span></td>
+            <td>
+                <div style="width: 40px; height: 40px; border-radius: 8px; overflow: hidden; background: var(--bg-secondary);">
+                    <img src="${unit.image || 'foto_boxplay/unitps.jpg'}" alt="${unit.name}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='foto_boxplay/unitps.jpg'">
+                </div>
+            </td>
+            <td>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button class="btn btn-secondary" onclick="editUnit(${unit.id})" style="padding: 0.5rem; color: var(--accent);">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-secondary" onclick="deleteUnit(${unit.id})" style="padding: 0.5rem; color: var(--danger);">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </td>
+        </tr>
+    `).join('');
+}
+
+async function deleteBranch(branchName) {
+    if (!confirm(`Apakah Anda yakin ingin menghapus cabang "${branchName}"? Semua unit di cabang ini juga akan dihapus.`)) return;
+
+    try {
+        // Remove from APP_CONFIG.branches
+        APP_CONFIG.branches = APP_CONFIG.branches.filter(b => b !== branchName);
+
+        // Remove from localStorage branches
+        let branches = JSON.parse(localStorage.getItem('pb_branches')) || [];
+        branches = branches.filter(b => b.name !== branchName);
+        localStorage.setItem('pb_branches', JSON.stringify(branches));
+
+        // Remove units from this branch
+        let units = JSON.parse(localStorage.getItem('pb_units')) || defaultUnits;
+        units = units.filter(u => u.branch !== branchName);
+        localStorage.setItem('pb_units', JSON.stringify(units));
+
+        // Save to Firebase
+        if (typeof db !== 'undefined') {
+            await db.ref('boxplay/branches').set(APP_CONFIG.branches);
+            await db.ref('boxplay/branchData').set(branches);
+            await db.ref('boxplay/units').set(units);
+        }
+
+        showToast('Cabang dan unit berhasil dihapus!');
+        
+        // Refresh displays
+        renderBranchesGrid();
+        renderUnitsTable();
+        updateBranchOptions();
+        
+    } catch (error) {
+        console.error(error);
+        showToast('Gagal menghapus cabang.', 'danger');
+    }
+}
+
+async function deleteUnit(unitId) {
+    if (!confirm('Apakah Anda yakin ingin menghapus unit ini?')) return;
+
+    try {
+        let units = JSON.parse(localStorage.getItem('pb_units')) || defaultUnits;
+        units = units.filter(u => u.id !== unitId);
+        localStorage.setItem('pb_units', JSON.stringify(units));
+
+        // Save to Firebase
+        if (typeof db !== 'undefined') {
+            await db.ref('boxplay/units').set(units);
+        }
+
+        showToast('Unit berhasil dihapus!');
+        renderUnitsTable();
+        
+    } catch (error) {
+        console.error(error);
+        showToast('Gagal menghapus unit.', 'danger');
+    }
+}
+
+function updateBranchOptions() {
+    // Update any select elements that depend on branches
+    const selects = document.querySelectorAll('select[id*="branch"]');
+    selects.forEach(select => {
+        if (select.id === 'unit-branch') {
+            const currentValue = select.value;
+            select.innerHTML = '<option value="">Pilih cabang...</option>' + 
+                APP_CONFIG.branches.map(branch => `<option value="${branch}" ${branch === currentValue ? 'selected' : ''}>${branch}</option>`).join('');
+        }
+    });
+}
+
+// Placeholder functions for edit (can be implemented later)
+function editBranch(branchName) {
+    showToast('Fitur edit cabang akan segera hadir!', 'info');
+}
+
+function editUnit(unitId) {
+    showToast('Fitur edit unit akan segera hadir!', 'info');
+}
+
+// === INITIALIZATION ===
+function initDashboardPage() {
+    // Load initial data
+    ensureDefaultBranchData();
+    renderBranchesGrid();
+    renderUnitsTable();
+    
+    // Setup form handlers
+    const branchForm = document.getElementById('add-branch-form');
+    if (branchForm) {
+        branchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            handleAddBranch();
+        });
+        branchForm.addEventListener('reset', () => clearImagePreview('branch-image-preview'));
+    }
+    
+    const unitForm = document.getElementById('add-unit-form');
+    if (unitForm) {
+        unitForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            handleAddUnit();
+        });
+        unitForm.addEventListener('reset', () => clearImagePreview('unit-image-preview'));
+    }
+
+    const branchImageInput = document.getElementById('branch-image');
+    if (branchImageInput) branchImageInput.addEventListener('change', () => updateImagePreview('branch-image', 'branch-image-preview'));
+
+    const unitImageInput = document.getElementById('unit-image');
+    if (unitImageInput) unitImageInput.addEventListener('change', () => updateImagePreview('unit-image', 'unit-image-preview'));
+    
+    // Load existing data from Firebase if available
+    if (typeof db !== 'undefined') {
+        db.ref('boxplay/branches').on('value', (snapshot) => {
+            const branches = snapshot.val();
+            if (branches && Array.isArray(branches)) {
+                APP_CONFIG.branches = branches;
+                updateBranchOptions();
+            }
+        });
+        
+        db.ref('boxplay/branchData').on('value', (snapshot) => {
+            const branchData = snapshot.val();
+            if (branchData) {
+                localStorage.setItem('pb_branches', JSON.stringify(branchData));
+                renderBranchesGrid();
+            }
+        });
+        
+        db.ref('boxplay/units').on('value', (snapshot) => {
+            const units = snapshot.val();
+            if (units) {
+                localStorage.setItem('pb_units', JSON.stringify(units));
+                renderUnitsTable();
+            }
+        });
+    }
+}
 window.clearAllPromos = clearAllPromos;
 window.closeModal = closeModal;
 window.scrollToSection = scrollToSection;

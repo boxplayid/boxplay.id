@@ -3,23 +3,27 @@ const HOURLY_RATE = 15000;
 const USE_FIREBASE = true;
 
 const defaultUnits = [
-    { id: 1, name: 'Unit 01', type: 'PS4', branch: 'NUD CAFE', status: 'idle', customer: '', startTime: null, elapsed: 0, image: 'foto_boxplay/unitps.jpg' },
-    { id: 2, name: 'Unit 02', type: 'PS4', branch: 'NUD CAFE', status: 'idle', customer: '', startTime: null, elapsed: 0, image: 'foto_boxplay/unitps.jpg' },
-    { id: 3, name: 'Unit 03', type: 'PS4', branch: 'NUD CAFE', status: 'idle', customer: '', startTime: null, elapsed: 0, image: 'foto_boxplay/unitps.jpg' },
-    { id: 4, name: 'Unit 04', type: 'PS4', branch: 'NUD CAFE', status: 'idle', customer: '', startTime: null, elapsed: 0, image: 'foto_boxplay/unitps.jpg' },
-    { id: 5, name: 'Unit 05', type: 'PS4', branch: 'NUD CAFE', status: 'idle', customer: '', startTime: null, elapsed: 0, image: 'foto_boxplay/unitps.jpg' },
-    { id: 6, name: 'Unit 01', type: 'PS4', branch: 'PALIO SPITI', status: 'idle', customer: '', startTime: null, elapsed: 0, image: 'foto_boxplay/unitps.jpg' },
-    { id: 7, name: 'Unit 02', type: 'PS4', branch: 'PALIO SPITI', status: 'idle', customer: '', startTime: null, elapsed: 0, image: 'foto_boxplay/unitps.jpg' },
-    { id: 8, name: 'Unit 03', type: 'PS4', branch: 'PALIO SPITI', status: 'idle', customer: '', startTime: null, elapsed: 0, image: 'foto_boxplay/unitps.jpg' },
-    { id: 9, name: 'Unit 01', type: 'PS4', branch: 'PIRZY', status: 'idle', customer: '', startTime: null, elapsed: 0, image: 'foto_boxplay/unitps.jpg' },
-    { id: 10, name: 'Unit 02', type: 'PS4', branch: 'PIRZY', status: 'idle', customer: '', startTime: null, elapsed: 0, image: 'foto_boxplay/unitps.jpg' },
-    { id: 11, name: 'Unit 03', type: 'PS4', branch: 'PIRZY', status: 'idle', customer: '', startTime: null, elapsed: 0, image: 'foto_boxplay/unitps.jpg' },
-    { id: 12, name: 'Unit 01', type: 'PS4', branch: 'WAROENG RADEN', status: 'idle', customer: '', startTime: null, elapsed: 0, image: 'foto_boxplay/unitps.jpg' },
-    { id: 13, name: 'Unit 02', type: 'PS4', branch: 'WAROENG RADEN', status: 'idle', customer: '', startTime: null, elapsed: 0, image: 'foto_boxplay/unitps.jpg' },
-    { id: 14, name: 'Unit 03', type: 'PS4', branch: 'WAROENG RADEN', status: 'idle', customer: '', startTime: null, elapsed: 0, image: 'foto_boxplay/unitps.jpg' }
+    { id: 1, name: 'ND 1', type: 'PS4', branch: 'NUD HOUSE', status: 'idle', customer: '', startTime: null, elapsed: 0, image: 'foto_boxplay/unitps.jpg' },
+    { id: 2, name: 'ND 2', type: 'PS4', branch: 'NUD HOUSE', status: 'idle', customer: '', startTime: null, elapsed: 0, image: 'foto_boxplay/unitps.jpg' },
+    { id: 3, name: 'ND 3', type: 'PS4', branch: 'NUD HOUSE', status: 'idle', customer: '', startTime: null, elapsed: 0, image: 'foto_boxplay/unitps.jpg' },
+    { id: 4, name: 'ND 4', type: 'PS4', branch: 'NUD HOUSE', status: 'idle', customer: '', startTime: null, elapsed: 0, image: 'foto_boxplay/unitps.jpg' },
+    { id: 5, name: 'ND 5', type: 'PS4', branch: 'NUD HOUSE', status: 'idle', customer: '', startTime: null, elapsed: 0, image: 'foto_boxplay/unitps.jpg' },
+    { id: 6, name: 'PS 1', type: 'PS4', branch: 'PALIO SPITI', status: 'idle', customer: '', startTime: null, elapsed: 0, image: 'foto_boxplay/unitps.jpg' },
+    { id: 7, name: 'PS 2', type: 'PS4', branch: 'PALIO SPITI', status: 'idle', customer: '', startTime: null, elapsed: 0, image: 'foto_boxplay/unitps.jpg' },
+    { id: 8, name: 'PS 3', type: 'PS4', branch: 'PALIO SPITI', status: 'idle', customer: '', startTime: null, elapsed: 0, image: 'foto_boxplay/unitps.jpg' },
+    { id: 9, name: 'PZ 1', type: 'PS4', branch: 'PIRZZY', status: 'idle', customer: '', startTime: null, elapsed: 0, image: 'foto_boxplay/unitps.jpg' },
+    { id: 10, name: 'PZ 2', type: 'PS4', branch: 'PIRZZY', status: 'idle', customer: '', startTime: null, elapsed: 0, image: 'foto_boxplay/unitps.jpg' },
+    { id: 11, name: 'PZ 3', type: 'PS4', branch: 'PIRZZY', status: 'idle', customer: '', startTime: null, elapsed: 0, image: 'foto_boxplay/unitps.jpg' },
+    { id: 12, name: 'RD 1', type: 'PS4', branch: 'WAROENG RADEN', status: 'idle', customer: '', startTime: null, elapsed: 0, image: 'foto_boxplay/unitps.jpg' },
+    { id: 13, name: 'RD 2', type: 'PS4', branch: 'WAROENG RADEN', status: 'idle', customer: '', startTime: null, elapsed: 0, image: 'foto_boxplay/unitps.jpg' },
+    { id: 14, name: 'RD 3', type: 'PS4', branch: 'WAROENG RADEN', status: 'idle', customer: '', startTime: null, elapsed: 0, image: 'foto_boxplay/unitps.jpg' }
 ];
 
-let units = JSON.parse(localStorage.getItem('pb_units')) || defaultUnits;
+let storedUnits = JSON.parse(localStorage.getItem('pb_units'));
+let units = Array.isArray(storedUnits) && storedUnits.length === defaultUnits.length ? storedUnits : defaultUnits;
+if (!storedUnits || storedUnits.length !== defaultUnits.length) {
+    localStorage.setItem('pb_units', JSON.stringify(units));
+}
 let history = JSON.parse(localStorage.getItem('pb_history')) || [];
 let promos = JSON.parse(localStorage.getItem('pb_promos')) || [];
 let cart = JSON.parse(localStorage.getItem('pb_cart')) || [];

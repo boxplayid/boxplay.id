@@ -45,14 +45,17 @@
                 </div>
                 <div class="dropdown">
                     <button class="nav-link dropdown-toggle" onclick="toggleDropdown(event)">
-                        <i class="fas fa-tags"></i> <span>Promo</span>
+                        <i class="fas fa-building"></i> <span>Unit & Cabang</span>
                     </button>
                     <div class="dropdown-menu">
-                        <a href="#promo-section" class="dropdown-item" onclick="scrollToSection('promo-section'); return false;">
-                            <i class="fas fa-eye"></i> Lihat Promo
+                        <a href="#units-section" class="dropdown-item" onclick="scrollToSection('units-section'); return false;">
+                            <i class="fas fa-eye"></i> Lihat Unit & Cabang
                         </a>
-                        <a href="#" class="dropdown-item" onclick="showAddPromoModal(); return false;">
-                            <i class="fas fa-plus"></i> Tambah Promo
+                        <a href="#" class="dropdown-item" onclick="showAddBranchModal(); return false;">
+                            <i class="fas fa-plus"></i> Tambah Cabang Baru
+                        </a>
+                        <a href="#" class="dropdown-item" onclick="showAddUnitModal(); return false;">
+                            <i class="fas fa-plus-circle"></i> Tambah Unit Baru
                         </a>
                     </div>
                 </div>
@@ -203,6 +206,56 @@
                 </div>
             </div>
         </section>
+
+        <!-- Unit & Cabang Section -->
+        <section id="units-section" class="section">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <div>
+                    <div class="section-title" style="margin-bottom: 0;">Kelola Unit & Cabang</div>
+                    <div class="section-subtitle">Tambah cabang baru dan unit PS untuk setiap cabang. Perubahan akan otomatis tersimpan.</div>
+                </div>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button class="btn btn-primary" onclick="showAddBranchModal()" title="Tambah cabang baru" style="padding: 0.7rem 1.2rem; border-radius: 12px;">
+                        <i class="fas fa-building"></i> <span class="hide-mobile">Tambah Cabang</span>
+                    </button>
+                    <button class="btn btn-success" onclick="showAddUnitModal()" title="Tambah unit PS baru" style="padding: 0.7rem 1.2rem; border-radius: 12px;">
+                        <i class="fas fa-plus-circle"></i> <span class="hide-mobile">Tambah Unit</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Cabang List -->
+            <div class="card page-card" style="margin-bottom: 2rem;">
+                <div class="section-title" style="font-size: 1.2rem; margin-bottom: 1rem;">Daftar Cabang</div>
+                <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem;">
+                    <div id="branches-grid">
+                        <!-- Branches will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Units List -->
+            <div class="card page-card">
+                <div class="section-title" style="font-size: 1.2rem; margin-bottom: 1rem;">Daftar Unit PS</div>
+                <div class="table-wrapper">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nama Unit</th>
+                                <th>Cabang</th>
+                                <th>Status</th>
+                                <th>Gambar</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="units-table-body">
+                            <!-- Units data will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
     </main>
 
     <!-- Modal untuk Tambah Customer -->
@@ -274,6 +327,85 @@
                     <div class="form-actions">
                         <button type="button" class="btn btn-secondary" onclick="closeModal('add-promo-modal')">Batal</button>
                         <button type="submit" class="btn btn-primary">Simpan Promo</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal untuk Tambah Cabang -->
+    <div id="add-branch-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h3 id="branch-modal-title">Tambah Cabang Baru</h3>
+                    <p class="modal-subtitle">Tambah cabang baru yang akan muncul di halaman cabang dan katalog unit.</p>
+                </div>
+                <button class="modal-close" onclick="closeModal('add-branch-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="add-branch-form">
+                    <div class="form-group">
+                        <label for="branch-name">Nama Cabang</label>
+                        <input type="text" id="branch-name" class="form-input" placeholder="Contoh: NUD HOUSE, PALIO SPITI" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="branch-address">Alamat Cabang</label>
+                        <textarea id="branch-address" class="form-input" rows="3" placeholder="Masukkan alamat lengkap cabang" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="branch-image">Gambar Hero Slide</label>
+                        <input type="file" id="branch-image" class="form-input" accept="image/*" required>
+                        <small style="color: var(--muted); font-size: 0.8rem;">Unggah foto hero slide cabang.</small>
+                        <img id="branch-image-preview" class="image-preview" alt="Preview hero slide" hidden>
+                    </div>
+                    <div class="form-group">
+                        <label for="branch-code">Kode Unit</label>
+                        <input type="text" id="branch-code" class="form-input" placeholder="Contoh: ND, PS, PZ, RD" required maxlength="2">
+                        <small style="color: var(--muted); font-size: 0.8rem;">Kode 2 huruf untuk penamaan unit (ND 1, ND 2, dll)</small>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('add-branch-modal')">Batal</button>
+                        <button type="submit" class="btn btn-primary">Tambah Cabang</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal untuk Tambah Unit -->
+    <div id="add-unit-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h3 id="unit-modal-title">Tambah Unit PS Baru</h3>
+                    <p class="modal-subtitle">Tambah unit PS baru untuk cabang tertentu.</p>
+                </div>
+                <button class="modal-close" onclick="closeModal('add-unit-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="add-unit-form">
+                    <div class="form-group">
+                        <label for="unit-branch">Pilih Cabang</label>
+                        <select id="unit-branch" class="form-select" required>
+                            <option value="">Pilih cabang...</option>
+                            <!-- Options will be populated by JavaScript -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="unit-name">Nama Unit</label>
+                        <input type="text" id="unit-name" class="form-input" placeholder="Contoh: ND 6, PS 4" required>
+                        <small style="color: var(--muted); font-size: 0.8rem;">Gunakan format: [Kode] [Nomor] (sesuai kode cabang)</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="unit-image">Gambar Unit (Opsional)</label>
+                        <input type="file" id="unit-image" class="form-input" accept="image/*">
+                        <small style="color: var(--muted); font-size: 0.8rem;">Unggah gambar unit, kosongkan untuk default.</small>
+                        <img id="unit-image-preview" class="image-preview" alt="Preview unit" hidden>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('add-unit-modal')">Batal</button>
+                        <button type="submit" class="btn btn-primary">Tambah Unit</button>
                     </div>
                 </form>
             </div>

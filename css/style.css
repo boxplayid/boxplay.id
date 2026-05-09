@@ -1167,6 +1167,15 @@ select.form-select {
     color: rgba(255, 255, 255, 0.4);
 }
 
+.image-preview {
+    width: 100%;
+    max-height: 220px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    margin-top: 0.75rem;
+}
+
 .hero-slider-section {
     width: 100%;
     max-width: 850px; /* Menyamakan dengan portofolio.html */
