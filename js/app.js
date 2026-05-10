@@ -69,6 +69,7 @@ function ensureDefaultBranchData() {
         localStorage.setItem('pb_branches', JSON.stringify(branches));
     }
 
+    APP_CONFIG.branches = branches.map(branch => branch.name);
     return branches;
 }
 
@@ -137,7 +138,7 @@ function setHeroSlide(index) {
     const dots = document.querySelectorAll('.slider-dot');
     if (!slides.length || !dots.length) return;
 
-    heroSlideIndex = index % slides.length;
+    heroSlideIndex = ((index % slides.length) + slides.length) % slides.length;
 
     slides.forEach((slide, idx) => {
         slide.classList.toggle('active', idx === heroSlideIndex);
@@ -149,38 +150,38 @@ function setHeroSlide(index) {
 }
 
 function initHeroSlider() {
-    console.log("Memulai inisialisasi Hero Slider...");
     const slides = document.querySelectorAll('.hero-slide');
     const dots = document.querySelectorAll('.slider-dot');
+    const prevBtn = document.querySelector('.hero-prev');
+    const nextBtn = document.querySelector('.hero-next');
 
     if (!slides.length || !dots.length) {
-        console.error("Elemen Hero Slider tidak ditemukan!", { slides: slides.length, dots: dots.length });
+        console.error('Elemen Hero Slider tidak ditemukan!', { slides: slides.length, dots: dots.length });
         return;
     }
 
-    // Load images for all slides
     slides.forEach((slide, idx) => {
         const imagePath = slide.dataset.image;
-        console.log(`Loading image for slide ${idx}: ${imagePath}`);
         if (imagePath) {
             loadHeroImage(slide, imagePath);
         }
     });
 
-    // Set initial slide
     setHeroSlide(0);
 
-    // Add click handlers to dots
     dots.forEach((dot, idx) => {
-        dot.addEventListener('click', () => {
-            console.log(`Dot ${idx} diklik`);
-            setHeroSlide(idx);
-        });
+        dot.addEventListener('click', () => setHeroSlide(idx));
     });
 
-    // Auto-play
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => setHeroSlide(heroSlideIndex - 1));
+    }
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => setHeroSlide(heroSlideIndex + 1));
+    }
+
     setInterval(() => {
-        setHeroSlide((heroSlideIndex + 1) % slides.length);
+        setHeroSlide(heroSlideIndex + 1);
     }, 6500);
 }
 
@@ -695,16 +696,50 @@ function initDashboardPage() {
         navigateTo('login.html');
         return;
     }
+
+    // === LOAD INITIAL DATA ===
+    ensureDefaultBranchData();
+    renderBranchesGrid();
+    renderUnitsTable();
+    
+    // === SETUP QUEUE & DISPLAY ===
     const displayLink = document.getElementById('display-link');
     if (displayLink) displayLink.addEventListener('click', () => navigateTo('pages/display.html'));
     const logoutBtn = document.getElementById('logout-button');
     if (logoutBtn) logoutBtn.addEventListener('click', () => logout());
     
     listenQueueUpdates();
-    listenPromoUpdates(); // Tambahkan listener promo
-    listenCustomerUpdates(); // Tambahkan listener customer
+    listenPromoUpdates();
+    listenCustomerUpdates();
 
-    // Inisialisasi form promo
+    // === SETUP FORM HANDLERS ===
+    const branchForm = document.getElementById('add-branch-form');
+    if (branchForm) {
+        branchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            handleAddBranch();
+        });
+        branchForm.addEventListener('reset', () => clearImagePreview('branch-image-preview'));
+    }
+    
+    const unitForm = document.getElementById('add-unit-form');
+    if (unitForm) {
+        unitForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            handleAddUnit();
+        });
+        unitForm.addEventListener('reset', () => clearImagePreview('unit-image-preview'));
+    }
+
+    const editBranchForm = document.getElementById('edit-branch-form');
+    if (editBranchForm) {
+        editBranchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            handleEditBranch();
+        });
+        editBranchForm.addEventListener('reset', () => clearImagePreview('edit-branch-image-preview'));
+    }
+
     const promoForm = document.getElementById('add-promo-form');
     if (promoForm) {
         promoForm.addEventListener('submit', (e) => {
@@ -713,12 +748,50 @@ function initDashboardPage() {
         });
     }
 
-    // Inisialisasi form customer
     const customerForm = document.getElementById('add-customer-form');
     if (customerForm) {
         customerForm.addEventListener('submit', (e) => {
             e.preventDefault();
             handleAddCustomer();
+        });
+    }
+
+    updateBranchOptions();
+
+    // === SETUP IMAGE PREVIEW HANDLERS ===
+    const branchImageInput = document.getElementById('branch-image');
+    if (branchImageInput) branchImageInput.addEventListener('change', () => updateImagePreview('branch-image', 'branch-image-preview'));
+
+    const unitImageInput = document.getElementById('unit-image');
+    if (unitImageInput) unitImageInput.addEventListener('change', () => updateImagePreview('unit-image', 'unit-image-preview'));
+
+    const editBranchImageInput = document.getElementById('edit-branch-image');
+    if (editBranchImageInput) editBranchImageInput.addEventListener('change', () => updateImagePreview('edit-branch-image', 'edit-branch-image-preview'));
+    
+    // === LOAD DATA FROM FIREBASE ===
+    if (typeof db !== 'undefined') {
+        db.ref('boxplay/branches').on('value', (snapshot) => {
+            const branches = snapshot.val();
+            if (branches && Array.isArray(branches)) {
+                APP_CONFIG.branches = branches;
+                updateBranchOptions();
+            }
+        });
+        
+        db.ref('boxplay/branchData').on('value', (snapshot) => {
+            const branchData = snapshot.val();
+            if (branchData) {
+                localStorage.setItem('pb_branches', JSON.stringify(branchData));
+                renderBranchesGrid();
+            }
+        });
+        
+        db.ref('boxplay/units').on('value', (snapshot) => {
+            const units = snapshot.val();
+            if (units) {
+                localStorage.setItem('pb_units', JSON.stringify(units));
+                renderUnitsTable();
+            }
         });
     }
 }
@@ -1137,7 +1210,9 @@ async function processBooking() {
         sessionStorage.setItem('latestBooking', JSON.stringify(bookingData));
 
         showToast(`Nomor antrian berhasil dibuat: ${String(queueNumber).padStart(2, '0')}`);
-        setTimeout(() => navigateTo('waiting.html'), 900);
+        setTimeout(() => {
+            showWhatsAppConnectionModal(bookingData);
+        }, 900);
 
     } catch (error) {
         console.error(error);
@@ -1330,7 +1405,17 @@ function showModal(id) {
 
 function closeModal(id) {
     const modal = document.getElementById(id);
-    if (modal) modal.classList.remove('show');
+    if (modal) {
+        modal.classList.remove('show');
+        
+        // Reset form when closing edit branch modal
+        if (id === 'edit-branch-modal') {
+            const form = document.getElementById('edit-branch-form');
+            if (form) form.reset();
+            clearImagePreview('edit-branch-image-preview');
+            window.currentEditingBranch = null;
+        }
+    }
 }
 
 function readImageFileInput(inputId) {
@@ -1390,11 +1475,13 @@ window.showAddUnitModal = () => {
     if (form) form.reset();
     clearImagePreview('unit-image-preview');
     
-    // Populate branch options
+    // Populate branch options from stored branch data
     const branchSelect = document.getElementById('unit-branch');
     if (branchSelect) {
+        const branches = JSON.parse(localStorage.getItem('pb_branches')) || [];
+        const branchNames = branches.map(branch => branch.name);
         branchSelect.innerHTML = '<option value="">Pilih cabang...</option>' + 
-            APP_CONFIG.branches.map(branch => `<option value="${branch}">${branch}</option>`).join('');
+            branchNames.map(branch => `<option value="${branch}">${branch}</option>`).join('');
     }
     
     showModal('add-unit-modal');
@@ -1643,7 +1730,121 @@ function updateBranchOptions() {
 
 // Placeholder functions for edit (can be implemented later)
 function editBranch(branchName) {
-    showToast('Fitur edit cabang akan segera hadir!', 'info');
+    const branches = JSON.parse(localStorage.getItem('pb_branches')) || [];
+    const branch = branches.find(b => b.name === branchName);
+
+    if (!branch) {
+        showToast('Cabang tidak ditemukan!', 'danger');
+        return;
+    }
+
+    // Fill form with branch data
+    document.getElementById('edit-branch-name').value = branch.name;
+    document.getElementById('edit-branch-address').value = branch.address;
+    document.getElementById('edit-branch-code').value = branch.code;
+
+    // Show current image preview
+    const preview = document.getElementById('edit-branch-image-preview');
+    if (branch.image) {
+        preview.src = branch.image;
+        preview.hidden = false;
+    } else {
+        preview.hidden = true;
+    }
+
+    // Store current branch name for reference
+    window.currentEditingBranch = branchName;
+
+    // Show modal
+    showModal('edit-branch-modal');
+}
+
+async function handleEditBranch() {
+    const newName = document.getElementById('edit-branch-name').value.trim();
+    const address = document.getElementById('edit-branch-address').value.trim();
+    const code = document.getElementById('edit-branch-code').value.trim().toUpperCase();
+    const image = await readImageFileInput('edit-branch-image');
+
+    if (!newName || !address || !code) {
+        showToast('Harap isi semua field.', 'danger');
+        return;
+    }
+
+    if (code.length !== 2) {
+        showToast('Kode unit harus 2 huruf.', 'danger');
+        return;
+    }
+
+    try {
+        let branches = JSON.parse(localStorage.getItem('pb_branches')) || [];
+        const branchIndex = branches.findIndex(b => b.name === window.currentEditingBranch);
+
+        if (branchIndex === -1) {
+            showToast('Cabang tidak ditemukan!', 'danger');
+            return;
+        }
+
+        // Check if new name conflicts with existing branches (except current one)
+        const nameExists = branches.some((b, index) => index !== branchIndex && b.name === newName);
+        if (nameExists) {
+            showToast('Nama cabang sudah digunakan!', 'danger');
+            return;
+        }
+
+        // Update branch data
+        const oldBranch = branches[branchIndex];
+        branches[branchIndex] = {
+            ...oldBranch,
+            name: newName,
+            address,
+            code,
+            image: image || oldBranch.image, // Keep old image if no new image uploaded
+            updatedAt: Date.now()
+        };
+
+        // Update APP_CONFIG.branches
+        APP_CONFIG.branches = APP_CONFIG.branches.map(b => b === window.currentEditingBranch ? newName : b);
+
+        // Save to localStorage
+        localStorage.setItem('pb_branches', JSON.stringify(branches));
+
+        // Save to Firebase
+        if (typeof db !== 'undefined') {
+            await db.ref('boxplay/branches').set(APP_CONFIG.branches);
+            await db.ref('boxplay/branchData').set(branches);
+        }
+
+        // Update units that belong to this branch
+        if (newName !== window.currentEditingBranch) {
+            let units = JSON.parse(localStorage.getItem('pb_units')) || [];
+            units = units.map(unit => {
+                if (unit.branch === window.currentEditingBranch) {
+                    return { ...unit, branch: newName };
+                }
+                return unit;
+            });
+            localStorage.setItem('pb_units', JSON.stringify(units));
+
+            if (typeof db !== 'undefined') {
+                await db.ref('boxplay/units').set(units);
+            }
+        }
+
+        showToast('Cabang berhasil diperbarui!');
+
+        // Close modal and refresh displays
+        closeModal('edit-branch-modal');
+        renderBranchesGrid();
+        renderUnitsTable();
+        updateBranchOptions();
+
+        // Clear current editing reference
+        window.currentEditingBranch = null;
+
+    } catch (error) {
+        console.error(error);
+        showToast('Gagal memperbarui cabang.', 'danger');
+    }
 }
 
 function editUnit(unitId) {
@@ -1676,11 +1877,25 @@ function initDashboardPage() {
         unitForm.addEventListener('reset', () => clearImagePreview('unit-image-preview'));
     }
 
+    const editBranchForm = document.getElementById('edit-branch-form');
+    if (editBranchForm) {
+        editBranchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            handleEditBranch();
+        });
+        editBranchForm.addEventListener('reset', () => clearImagePreview('edit-branch-image-preview'));
+    }
+
+    updateBranchOptions();
+
     const branchImageInput = document.getElementById('branch-image');
     if (branchImageInput) branchImageInput.addEventListener('change', () => updateImagePreview('branch-image', 'branch-image-preview'));
 
     const unitImageInput = document.getElementById('unit-image');
     if (unitImageInput) unitImageInput.addEventListener('change', () => updateImagePreview('unit-image', 'unit-image-preview'));
+
+    const editBranchImageInput = document.getElementById('edit-branch-image');
+    if (editBranchImageInput) editBranchImageInput.addEventListener('change', () => updateImagePreview('edit-branch-image', 'edit-branch-image-preview'));
     
     // Load existing data from Firebase if available
     if (typeof db !== 'undefined') {
@@ -1717,5 +1932,43 @@ window.callQueue = callQueue;
 window.completeQueue = completeQueue;
 window.navigateTo = navigateTo;
 window.toggleMenu = toggleMenu;
+
+function showWhatsAppConnectionModal(bookingData) {
+    const modal = document.getElementById('whatsapp-connection-modal');
+    if (!modal) return;
+
+    // TODO: Ganti dengan nomor WA operator dan link grup WA yang sebenarnya
+    const operatorWA = '628557862734'; // Nomor WA operator Boxplay
+    const groupWA = 'https://chat.whatsapp.com/D1OE5q7Ggul5BlPGBm8ZW5'; // Link invite grup WA Boxplay
+
+    const operatorLink = `https://wa.me/${operatorWA}?text=Halo%20Boxplay!%20Saya%20sudah%20daftar%20antrian%20nomor%20${bookingData.number}%20untuk%20cabang%20${encodeURIComponent(bookingData.branch)}.%20Mohon%20bantuan%20untuk%20monitoring%20antrian%20saya.`;
+
+    // Update modal content
+    const operatorBtn = modal.querySelector('.wa-operator-btn');
+    const groupBtn = modal.querySelector('.wa-group-btn');
+
+    if (operatorBtn) operatorBtn.href = operatorLink;
+    if (groupBtn) groupBtn.href = groupWA;
+
+    // Show modal
+    modal.classList.add('show');
+
+    // Auto redirect to waiting page after modal interaction
+    const closeBtn = modal.querySelector('.modal-close');
+    const continueBtn = modal.querySelector('.continue-btn');
+
+    const redirectToWaiting = () => {
+        modal.classList.remove('show');
+        navigateTo('waiting.html');
+    };
+
+    if (closeBtn) closeBtn.onclick = redirectToWaiting;
+    if (continueBtn) continueBtn.onclick = redirectToWaiting;
+
+    // Close on outside click
+    modal.onclick = (e) => {
+        if (e.target === modal) redirectToWaiting();
+    };
+}
 
 document.addEventListener('DOMContentLoaded', initPage);

@@ -104,6 +104,53 @@
         </section>
     </main>
 
+    <!-- Modal WhatsApp Connection -->
+    <div id="whatsapp-connection-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h3>🎉 Antrian Berhasil Dibuat!</h3>
+                    <p class="modal-subtitle">Dapatkan notifikasi antrian secara realtime melalui WhatsApp</p>
+                </div>
+                <button class="modal-close" onclick="closeModal('whatsapp-connection-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="wa-connection-options">
+                    <div class="wa-option">
+                        <div class="wa-icon">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <div class="wa-content">
+                            <h4>Chat Operator WhatsApp</h4>
+                            <p>Dapatkan bantuan langsung dari operator untuk monitoring antrian Anda</p>
+                            <a href="#" class="btn btn-success wa-operator-btn" target="_blank">
+                                <i class="fab fa-whatsapp"></i> Chat Operator
+                            </a>
+                        </div>
+                    </div>
+                    <div class="wa-option">
+                        <div class="wa-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="wa-content">
+                            <h4>Bergabung Grup WhatsApp</h4>
+                            <p>Dapatkan notifikasi antrian otomatis dan update terbaru dari Boxplay</p>
+                            <a href="#" class="btn btn-primary wa-group-btn" target="_blank">
+                                <i class="fas fa-users"></i> Join Grup WA
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="wa-notice">
+                    <p><i class="fas fa-info-circle"></i> Dengan bergabung WhatsApp, Anda akan mendapat notifikasi ketika antrian Anda hampir dipanggil tanpa perlu selalu membuka website.</p>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary continue-btn">Lanjut ke Halaman Antrian</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="app-toast" class="toast"></div>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
