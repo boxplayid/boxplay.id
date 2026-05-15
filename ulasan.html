@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ulasan - BOXPLAY.ID</title>
+    <link rel="icon" type="image/jpeg" href="foto_boxplay/icon_aplikasi.jpeg">
+    <meta name="theme-color" content="#090b10">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .rating-section {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .star-rating {
+            display: flex;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .star {
+            cursor: pointer;
+            color: var(--muted);
+            transition: all 0.2s;
+        }
+        
+        .star:hover,
+        .star.active {
+            color: #ffd700;
+            transform: scale(1.2);
+        }
+        
+        .review-card {
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+        
+        .review-author {
+            font-weight: 600;
+            color: var(--accent);
+        }
+        
+        .review-rating {
+            color: #ffd700;
+        }
+        
+        .review-date {
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+        
+        .review-text {
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .form-card {
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: calc(var(--radius) * 0.5);
+            background: var(--bg-input);
+            color: var(--text);
+            font-family: inherit;
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: var(--bg-input);
+        }
+        
+        .review-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--accent);
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--muted);
+            margin-top: 0.5rem;
+        }
+        
+        .reviews-container {
+            max-height: 600px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+    </style>
+</head>
+<body data-page="review">
+    <div class="header">
+        <div class="container navbar">
+            <div class="page-label">Ulasan</div>
+            <a class="brand" href="beranda.html">
+                <span class="brand-icon"><img src="foto_boxplay/icon_aplikasi.jpeg" alt="Logo Boxplay" /></span>
+                <span class="brand-name">BOXPLAY.ID</span>
+            </a>
+            <div class="navbar-end">
+                <button class="btn btn-secondary btn-icon admin-login" onclick="navigateTo('login.html')" title="Login Admin">
+                    <i class="fas fa-user-shield"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <main class="container">
+        <section class="section">
+            <div class="section-header">
+                <h1>Ulasan dan Rating</h1>
+                <p class="section-subtitle">Bagikan pengalaman Anda menggunakan layanan BOXPLAY.ID</p>
+            </div>
+
+            <!-- Review Statistics -->
+            <div class="review-stats">
+                <div class="stat-card">
+                    <div class="stat-value" id="total-reviews">0</div>
+                    <div class="stat-label">Total Ulasan</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="avg-rating">0</div>
+                    <div class="stat-label">Rating Rata-rata</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="5-star-count">0</div>
+                    <div class="stat-label">Rating 5 Bintang</div>
+                </div>
+            </div>
+
+            <!-- Form Add Review -->
+            <div class="form-card">
+                <h3 style="margin-bottom: 1.5rem;"><i class="fas fa-pencil-alt"></i> Tambah Ulasan Anda</h3>
+                
+                <form id="review-form">
+                    <div class="form-group">
+                        <label for="reviewer-name">Nama (Opsional)</label>
+                        <input id="reviewer-name" class="form-input" type="text" placeholder="Masukkan nama Anda">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Berikan Rating</label>
+                        <div class="star-rating" id="star-rating">
+                            <span class="star" data-rating="1"><i class="fas fa-star"></i></span>
+                            <span class="star" data-rating="2"><i class="fas fa-star"></i></span>
+                            <span class="star" data-rating="3"><i class="fas fa-star"></i></span>
+                            <span class="star" data-rating="4"><i class="fas fa-star"></i></span>
+                            <span class="star" data-rating="5"><i class="fas fa-star"></i></span>
+                        </div>
+                        <input id="rating-input" type="hidden" value="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="review-text">Komentar Anda</label>
+                        <textarea id="review-text" class="textarea" placeholder="Bagikan pengalaman Anda tentang Boxplay.id..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i> Kirim Ulasan
+                    </button>
+                </form>
+            </div>
+
+            <!-- Reviews List -->
+            <div class="card page-card">
+                <div style="padding: 1.5rem 2rem; border-bottom: 1px solid var(--border);">
+                    <div class="section-title" style="margin: 0; font-size: 1.25rem;"><i class="fas fa-comments"></i> Ulasan dari Pengguna Lain</div>
+                </div>
+                <div class="reviews-container" style="padding: 1.5rem 2rem;">
+                    <div id="reviews-list" style="text-align: center; color: var(--muted);">
+                        <p>Belum ada ulasan. Jadilah yang pertama memberikan ulasan!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="app-toast" class="toast"></div>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        let currentRating = 0;
+
+        // Star Rating Handler
+        document.querySelectorAll('.star').forEach(star => {
+            star.addEventListener('click', function() {
+                currentRating = this.dataset.rating;
+                document.getElementById('rating-input').value = currentRating;
+                updateStars();
+            });
+
+            star.addEventListener('mouseover', function() {
+                const hoverRating = this.dataset.rating;
+                document.querySelectorAll('.star').forEach(s => {
+                    s.classList.toggle('active', s.dataset.rating <= hoverRating);
+                });
+            });
+        });
+
+        document.getElementById('star-rating').addEventListener('mouseleave', updateStars);
+
+        function updateStars() {
+            document.querySelectorAll('.star').forEach(star => {
+                star.classList.toggle('active', star.dataset.rating <= currentRating);
+            });
+        }
+
+        // Form Submit Handler
+        document.getElementById('review-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            if (currentRating === 0) {
+                showToast('Silakan pilih rating terlebih dahulu', 'error');
+                return;
+            }
+
+            const name = document.getElementById('reviewer-name').value.trim() || 'Anonymous';
+            const rating = currentRating;
+            const text = document.getElementById('review-text').value.trim();
+
+            if (!text) {
+                showToast('Komentar tidak boleh kosong', 'error');
+                return;
+            }
+
+            try {
+                const newReviewRef = firebase.database().ref('reviews').push();
+                await newReviewRef.set({
+                    name: name,
+                    rating: parseInt(rating),
+                    text: text,
+                    timestamp: firebase.database.ServerValue.TIMESTAMP
+                });
+
+                showToast('Ulasan berhasil dikirim! Terima kasih.', 'success');
+                
+                // Reset form
+                document.getElementById('review-form').reset();
+                currentRating = 0;
+                updateStars();
+                document.getElementById('rating-input').value = 0;
+
+                // Reload reviews
+                loadReviews();
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('Gagal mengirim ulasan: ' + error.message, 'error');
+            }
+        });
+
+        // Load Reviews from Firebase
+        function loadReviews() {
+            const reviewsList = document.getElementById('reviews-list');
+            const reviews = [];
+
+            firebase.database().ref('reviews').orderByChild('timestamp').limitToLast(50).on('value', (snapshot) => {
+                reviews.length = 0;
+                
+                snapshot.forEach((childSnapshot) => {
+                    reviews.unshift({
+                        id: childSnapshot.key,
+                        ...childSnapshot.val()
+                    });
+                });
+
+                // Update statistics
+                updateStatistics(reviews);
+
+                if (reviews.length === 0) {
+                    reviewsList.innerHTML = '<p style="text-align: center; color: var(--muted);">Belum ada ulasan. Jadilah yang pertama memberikan ulasan!</p>';
+                    return;
+                }
+
+                reviewsList.innerHTML = reviews.map(review => `
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div>
+                                <div class="review-author">${escapeHtml(review.name || 'Anonymous')}</div>
+                                <div class="review-date">${formatDate(review.timestamp)}</div>
+                            </div>
+                            <div class="review-rating">
+                                ${'<i class="fas fa-star"></i>'.repeat(review.rating)}<span style="color: var(--muted);">${'<i class="far fa-star"></i>'.repeat(5 - review.rating)}</span>
+                            </div>
+                        </div>
+                        <div class="review-text">${escapeHtml(review.text)}</div>
+                    </div>
+                `).join('');
+            });
+        }
+
+        function updateStatistics(reviews) {
+            document.getElementById('total-reviews').textContent = reviews.length;
+
+            if (reviews.length > 0) {
+                const avgRating = (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1);
+                document.getElementById('avg-rating').textContent = avgRating;
+
+                const fiveStarCount = reviews.filter(r => r.rating === 5).length;
+                document.getElementById('5-star-count').textContent = fiveStarCount;
+            } else {
+                document.getElementById('avg-rating').textContent = '0';
+                document.getElementById('5-star-count').textContent = '0';
+            }
+        }
+
+        function formatDate(timestamp) {
+            if (!timestamp) return 'Baru saja';
+            const date = new Date(timestamp);
+            const now = new Date();
+            const diff = now - date;
+
+            if (diff < 60000) return 'Baru saja';
+            if (diff < 3600000) return Math.floor(diff / 60000) + ' menit yang lalu';
+            if (diff < 86400000) return Math.floor(diff / 3600000) + ' jam yang lalu';
+            if (diff < 604800000) return Math.floor(diff / 86400000) + ' hari yang lalu';
+
+            return date.toLocaleDateString('id-ID');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Initialize Firebase Listeners
+        window.addEventListener('load', function() {
+            if (typeof firebase !== 'undefined') {
+                loadReviews();
+            }
+        });
+
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('app-toast');
+            toast.textContent = message;
+            toast.className = 'toast show ' + type;
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+    <div class="bottom-nav">
+        <a href="beranda.html" class="bottom-nav-item">
+            <i class="fas fa-home"></i>
+            <span>Beranda</span>
+        </a>
+        <a href="waiting.html" class="bottom-nav-item">
+            <i class="fas fa-list"></i>
+            <span>Antrian</span>
+        </a>
+        <a href="cabang.html" class="bottom-nav-item">
+            <i class="fas fa-store"></i>
+            <span>Cabang</span>
+        </a>
+        <a href="game.html" class="bottom-nav-item">
+            <i class="fas fa-gamepad"></i>
+            <span>Game</span>
+        </a>
+        <a href="portofolio.html" class="bottom-nav-item">
+            <i class="fas fa-images"></i>
+            <span>Portofolio</span>
+        </a>
+        <a href="tentang.html" class="bottom-nav-item">
+            <i class="fas fa-info-circle"></i>
+            <span>Tentang Kami</span>
+        </a>
+        <a href="ulasan.html" class="bottom-nav-item active">
+            <i class="fas fa-star"></i>
+            <span>Ulasan</span>
+        </a>
+    </div>
+</body>
+</html>

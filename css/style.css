@@ -23,7 +23,9 @@
     box-sizing: border-box;
 }
 
-html {
+html, body {
+    min-height: 100%;
+    width: 100%;
     scroll-behavior: smooth;
 }
 
@@ -34,6 +36,8 @@ body {
                 linear-gradient(180deg, #05060d 0%, #080a14 100%);
     color: var(--text);
     position: relative;
+    padding-bottom: 9rem;
+    overflow-x: hidden;
 }
 
 body::before {
@@ -71,7 +75,9 @@ input, select, textarea {
 }
 
 .container {
-    width: min(1200px, calc(100% - 2rem));
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 1rem;
     margin: 0 auto;
 }
 
@@ -79,35 +85,132 @@ input, select, textarea {
     position: sticky;
     top: 0;
     z-index: 50;
+    background: rgba(5, 6, 13, 0.88);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.bottom-nav {
+    position: fixed;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 999;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: min(1100px, calc(100% - 2rem));
+    padding: 1rem 1rem;
     background: rgba(5, 6, 13, 0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(75, 229, 255, 0.08);
-    transition: border-color 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 28px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+}
+
+.bottom-nav-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.85rem 1rem;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: var(--text);
+    transition: all 0.25s ease;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.88rem;
+    min-width: 120px;
+    justify-content: center;
+}
+
+.bottom-nav-item.active {
+    background: rgba(75, 229, 255, 0.18);
+    border-color: rgba(75, 229, 255, 0.28);
+    color: var(--accent);
+}
+
+.bottom-nav-item:hover,
+.bottom-nav-item:focus {
+    transform: translateY(-1px);
+    background: rgba(75, 229, 255, 0.12);
+    border-color: rgba(75, 229, 255, 0.24);
+    color: var(--accent);
+}
+
+.bottom-nav-item i {
+    width: 18px;
+    text-align: center;
+}
+
+@media (max-width: 992px) {
+    .bottom-nav {
+        width: calc(100% - 1.5rem);
+        padding: 0.75rem;
+    }
+    .bottom-nav-item {
+        flex: 1 1 48%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 600px) {
+    .bottom-nav-item {
+        flex: 1 1 100%;
+    }
 }
 
 .navbar {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
+    display: flex;
     align-items: center;
-    gap: 2rem;
-    padding: 0.85rem 0;
+    justify-content: space-between;
+    gap: 1rem;
+    position: relative;
+    padding: 1rem 0;
+}
+
+.page-label {
+    color: var(--text);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding: 0.75rem 0.95rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14);
 }
 
 .brand {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     display: flex;
     align-items: center;
-    gap: 0.7rem;
-    transition: transform 0.3s ease;
+    gap: 0.8rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, backdrop-filter 0.3s ease;
+    padding: 0.75rem 1rem;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18);
+    z-index: 5;
 }
 
 .brand:hover {
-    transform: scale(1.02);
+    transform: translate(-50%, -50%) scale(1.02);
 }
 
 .brand-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 16px;
+    width: 52px;
+    height: 52px;
+    border-radius: 18px;
     background: radial-gradient(circle, rgba(212, 175, 55, 0.95), rgba(144, 115, 42, 0.35));
     display: grid;
     place-items: center;
@@ -131,18 +234,21 @@ input, select, textarea {
 .brand-name {
     display: inline-block;
     line-height: 1;
-    font-size: 1.15rem;
+    font-size: 1.2rem;
     font-weight: 900;
-    letter-spacing: -0.02em;
+    letter-spacing: 0.08em;
     color: var(--text);
+    text-transform: uppercase;
+    text-shadow: 0 4px 18px rgba(75, 229, 255, 0.18);
 }
 
 .navbar-center {
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
     gap: 0.3rem;
     flex-wrap: wrap;
+    margin-left: auto;
 }
 
 .nav-actions {
@@ -594,6 +700,19 @@ input, select, textarea {
     .brand {
         order: 1;
         gap: 0.6rem;
+        position: relative;
+        left: auto;
+        top: auto;
+        transform: none;
+        margin: 0 auto;
+        width: auto;
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(18px);
+    }
+
+    .page-label {
+        flex: 1 1 100%;
+        margin-bottom: 0.75rem;
     }
 
     .brand-icon {
